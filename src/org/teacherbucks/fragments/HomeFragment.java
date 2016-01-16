@@ -126,7 +126,7 @@ public class HomeFragment extends Fragment {
 		((MainActivity) parentContext).setBackKeyFlag(true);
 	}
 	
-	private void setListenersToVoucherDeliveryMethods(){
+	/*private void setListenersToVoucherDeliveryMethods(){
 		//voucher via email
 		Email.setOnClickListener(new OnClickListener() {
 
@@ -162,9 +162,9 @@ public class HomeFragment extends Fragment {
 				goToVoucherDelivery(3);
 			}
 		});
-	}
+	}*/
 	
-	public void goToVoucherDelivery(int position){
+	/*public void goToVoucherDelivery(int position){
 		Fragment fragment = null;
 		
 		switch (position) {
@@ -187,7 +187,7 @@ public class HomeFragment extends Fragment {
 		
 		if(fragment != null){
 			Toast.makeText(getContext(), "7u6yuir5fg", Toast.LENGTH_LONG).show();
-			/*FragmentManager fragmentManager = getFragmentManager();
+			FragmentManager fragmentManager = getFragmentManager();
 			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			fragmentTransaction.add(R.id.fragment_container, fragment);
 			fragmentTransaction.show(fragment);
@@ -195,7 +195,7 @@ public class HomeFragment extends Fragment {
 			/*getFragmentManager().beginTransaction()
 	          .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
 	          .show(fragment)
-	          .commit();*/
+	          .commit();
 			//final FragmentManager fragmentManager = getFragmentManager();
 			//fragmentManager.beginTransaction().replace(R.id.frame_container, new EmailVoucherFragment()).commit();
 			FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
@@ -206,6 +206,6 @@ public class HomeFragment extends Fragment {
 			Log.e("HomeActivity", "Error in creating fragment");
 		}
 		
-	}
+	}*/
 	
 }
