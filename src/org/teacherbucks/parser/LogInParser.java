@@ -1,8 +1,6 @@
 package org.teacherbucks.parser;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,71 +20,75 @@ public class LogInParser {
 
 		LogInDataHolder.removeLogInData();
 
-		//System.out.println("json string:" + result);
+		// System.out.println("json string:" + result);
 
 		if (result.length() < 1) {
 			return false;
 		}
 
 		final JSONObject mainJsonObject = new JSONObject(result);
-		JSONObject data = mainJsonObject.getJSONObject("data");
 
-		String token = data.getString("token");
-		Promotion promotionModel;
-		User userModel;
-		Company companyModel;
+		if (mainJsonObject.has("data")) {
 
-		JSONObject user = data.getJSONObject("user");
-		JSONObject company = data.getJSONObject("company");
+			JSONObject data = mainJsonObject.getJSONObject("data");
 
-		userModel = new User();
-		userModel.setEmail(user.getString("email"));
-		userModel.setName(user.getString("name"));
-		userModel.setAddress(user.getString("address"));
-		userModel.setPhone(user.getString("phone"));
-		userModel.setType(user.getString("type"));
-		userModel.setImage(user.getString("image"));
+			String token = data.getString("token");
+			Promotion promotionModel;
+			User userModel;
+			Company companyModel;
 
-		companyModel = new Company();
-		companyModel.setEmail(company.getString("email"));
-		companyModel.setTitle(company.getString("title"));
-		companyModel.setAddress(company.getString("address"));
-		companyModel.setWebsite(company.getString("website"));
-		companyModel.setPhone(company.getString("phone"));
-		companyModel.setImage(company.getString("image"));
+			JSONObject user = data.getJSONObject("user");
+			JSONObject company = data.getJSONObject("company");
 
-		JSONArray promotionArray = data.getJSONArray("promotions");
+			userModel = new User();
+			userModel.setEmail(user.getString("email"));
+			userModel.setName(user.getString("name"));
+			userModel.setAddress(user.getString("address"));
+			userModel.setPhone(user.getString("phone"));
+			userModel.setType(user.getString("type"));
+			userModel.setImage(user.getString("image"));
 
-		List<Promotion> promotionList = new ArrayList<Promotion>();
+			companyModel = new Company();
+			companyModel.setEmail(company.getString("email"));
+			companyModel.setTitle(company.getString("title"));
+			companyModel.setAddress(company.getString("address"));
+			companyModel.setWebsite(company.getString("website"));
+			companyModel.setPhone(company.getString("phone"));
+			companyModel.setImage(company.getString("image"));
 
-		for (int i = 0; i < promotionArray.length(); i++) {
-			JSONObject promotionObject = promotionArray.getJSONObject(i);
-			promotionModel = new Promotion();
+			JSONArray promotionArray = data.getJSONArray("promotions");
 
-			promotionModel.setId(promotionObject.getString("id"));
-			promotionModel.setTitle(promotionObject.getString("title"));
-			promotionModel.setDescription(promotionObject.getString("description"));
-			promotionModel.setType_of_offer(promotionObject.getString("type_of_offer"));
-			promotionModel.setPer_offer_amount(promotionObject.getString("per_offer_amount"));
-			promotionModel.setRemaining_amount(promotionObject.getString("remaining_amount"));
-			promotionModel.setAmount(promotionObject.getString("amount"));
-			promotionModel.setImage(promotionObject.getString("image"));
+			for (int i = 0; i < promotionArray.length(); i++) {
+				JSONObject promotionObject = promotionArray.getJSONObject(i);
+				promotionModel = new Promotion();
 
-			promotionList.add(promotionModel);
-			promotionModel = null;
+				promotionModel.setId(promotionObject.getString("id"));
+				promotionModel.setTitle(promotionObject.getString("title"));
+				promotionModel.setDescription(promotionObject.getString("description"));
+				promotionModel.setType_of_offer(promotionObject.getString("type_of_offer"));
+				promotionModel.setPer_offer_amount(promotionObject.getString("per_offer_amount"));
+				promotionModel.setRemaining_amount(promotionObject.getString("remaining_amount"));
+				promotionModel.setAmount(promotionObject.getString("amount"));
+				promotionModel.setImage(promotionObject.getString("image"));
+
+				PromotionHolder.setPromotionList(promotionModel);
+				promotionModel = null;
+			}
+
+			LogInResponse loginData = new LogInResponse();
+			loginData.setToken(token);
+			loginData.setUser(userModel);
+			loginData.setCompany(companyModel);
+			loginData.setPromotionList(PromotionHolder.getAllPromotionList());
+
+			LogInDataHolder.setLogInData(loginData);
+
+			return true;
+
+		} else {
+			return false;
 		}
 
-		LogInResponse loginData = new LogInResponse();
-		loginData.setToken(token);
-		loginData.setUser(userModel);
-		loginData.setCompany(companyModel);
-		loginData.setPromotionList(promotionList);
-
-		LogInDataHolder.setLogInData(loginData);
-
-		//System.out.println("promotion size " + promotionList.size());
-
-		return true;
 	}
 
 }

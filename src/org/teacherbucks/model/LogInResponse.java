@@ -1,13 +1,13 @@
 package org.teacherbucks.model;
 
-import java.util.List;
+import java.util.Vector;
 
 public class LogInResponse {
 	
 	private String token;
 	private Company company;
 	private User user;
-	private List<Promotion> promotionList;
+	private Vector<Promotion> promotionList;
 	public String getToken() {
 		return token;
 	}
@@ -26,10 +26,10 @@ public class LogInResponse {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public List<Promotion> getPromotionList() {
+	public Vector<Promotion> getPromotionList() {
 		return promotionList;
 	}
-	public void setPromotionList(List<Promotion> promotionList) {
+	public void setPromotionList(Vector<Promotion> promotionList) {
 		this.promotionList = promotionList;
 	}
 	
