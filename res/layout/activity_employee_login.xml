@@ -49,6 +49,7 @@
                 android:layout_marginBottom="40dp"
                 android:hint="Employee Username"
                 android:inputType="text"
+                android:text="emp3@admin.com"
                 android:textColor="@color/white" />
 
             <EditText
@@ -58,6 +59,7 @@
                 android:layout_marginBottom="20dp"
                 android:hint="Password"
                 android:inputType="textPassword"
+                android:text="password"
                 android:textColor="@color/white" />
 
             <TextView

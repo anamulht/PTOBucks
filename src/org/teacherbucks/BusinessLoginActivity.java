@@ -75,7 +75,7 @@ public class BusinessLoginActivity extends Activity {
 			try {
 
 				HttpClient httpclient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(Constant.baseURL + "login");
+				HttpPost httppost = new HttpPost(Constant.baseURL + "api/v1/auth/login");
 
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 				// emp3@admin.com password
