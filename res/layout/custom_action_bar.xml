@@ -6,8 +6,8 @@
 
     <RelativeLayout
         android:id="@+id/actionbar_all"
-        android:layout_width="fill_parent"
-        android:layout_height="60dp" >
+        android:layout_width="match_parent"
+        android:layout_height="80dp" >
 
         <ImageView
             android:id="@+id/copilotmenuback"
@@ -23,13 +23,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="2dp"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@id/copilotmenuback"
             android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:visibility="visible" />
-        
+
+        <ImageView
+            android:id="@+id/title_home_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/home" />
     </RelativeLayout>
 
 </LinearLayout>

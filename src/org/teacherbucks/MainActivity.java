@@ -3,6 +3,7 @@ package org.teacherbucks;
 import org.teacherbucks.fragments.DataPreferencesFragment;
 import org.teacherbucks.fragments.HomeFragment;
 import org.teacherbucks.fragments.SalesDataFragment;
+import org.teacherbucks.holder.LogInDataHolder;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -50,7 +51,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		userGroup = getIntent().getExtras().getInt("userG");
-		
+
 		setCustomActionBarAndSetUpSlideMenu();
 		goToHomeFragment();
 
@@ -60,7 +61,7 @@ public class MainActivity extends Activity {
 		backKeyFlag = false;
 		final FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();
-		setActionBarTitle("The Super Store");
+		setActionBarTitle(LogInDataHolder.getLogInData().getCompany().getTitle());
 	}
 
 	private void setCustomActionBarAndSetUpSlideMenu() {
@@ -73,69 +74,78 @@ public class MainActivity extends Activity {
 		mActionBar.setCustomView(mCustomView);
 		copilotmenuback = (ImageView) mCustomView.findViewById(R.id.copilotmenuback);
 
+		((ImageView) mCustomView.findViewById(R.id.title_home_icon)).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				goToHomeFragment();
+			}
+		});
+
 		actionBarTitle = (TextView) mCustomView.findViewById(R.id.title);
-		setActionBarTitle("The Super Store");
+		setActionBarTitle(LogInDataHolder.getLogInData().getCompany().getTitle());
 
 		mActionBar.setDisplayShowCustomEnabled(true);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		layout_slider = (LinearLayout) findViewById(R.id.layout_slider);
-		
-		if(userGroup == 0){
+
+		if (userGroup == 0) {
 			sliderMenuContent = mInflater.inflate(R.layout.slider_menu_layout_business, null);
-			
+
 			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_data_preferences))
-			.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					mDrawerLayout.closeDrawer(layout_slider);
-					backKeyFlag = true;
-					final FragmentManager fragmentManager = getFragmentManager();
-					fragmentManager.beginTransaction().replace(R.id.frame_container, new DataPreferencesFragment()).commit();
-					setActionBarTitle("Settings");
-				}
-			});
-			
+					.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View arg0) {
+							mDrawerLayout.closeDrawer(layout_slider);
+							backKeyFlag = true;
+							final FragmentManager fragmentManager = getFragmentManager();
+							fragmentManager.beginTransaction()
+									.replace(R.id.frame_container, new DataPreferencesFragment()).commit();
+							setActionBarTitle("Settings");
+						}
+					});
+
 			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_sales_data))
-			.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					mDrawerLayout.closeDrawer(layout_slider);
-					backKeyFlag = true;
-					final FragmentManager fragmentManager = getFragmentManager();
-					fragmentManager.beginTransaction().replace(R.id.frame_container, new SalesDataFragment()).commit();
-					setActionBarTitle("Settings");
-				}
-			});
-			
-			
+					.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View arg0) {
+							mDrawerLayout.closeDrawer(layout_slider);
+							backKeyFlag = true;
+							final FragmentManager fragmentManager = getFragmentManager();
+							fragmentManager.beginTransaction().replace(R.id.frame_container, new SalesDataFragment())
+									.commit();
+							setActionBarTitle("Settings");
+						}
+					});
+
 			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_log_out))
-			.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					mDrawerLayout.closeDrawer(layout_slider);
-					Intent intent = new Intent(MainActivity.this, LoginChooserActivity.class);
-					startActivity(intent);			
-				}
-			});
-		}else if(userGroup == 1){
+					.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View arg0) {
+							mDrawerLayout.closeDrawer(layout_slider);
+							Intent intent = new Intent(MainActivity.this, LoginChooserActivity.class);
+							startActivity(intent);
+						}
+					});
+		} else if (userGroup == 1) {
 			sliderMenuContent = mInflater.inflate(R.layout.slider_menu_layout_employee, null);
-			
+
 			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_log_out_emp))
-			.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					mDrawerLayout.closeDrawer(layout_slider);
-					Intent intent = new Intent(MainActivity.this, LoginChooserActivity.class);
-					startActivity(intent);			
-				}
-			});
+					.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View arg0) {
+							mDrawerLayout.closeDrawer(layout_slider);
+							Intent intent = new Intent(MainActivity.this, LoginChooserActivity.class);
+							startActivity(intent);
+						}
+					});
 		}
-		
+
 		layout_slider.addView(sliderMenuContent);
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_launcher, R.drawable.ic_launcher);
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -169,7 +179,7 @@ public class MainActivity extends Activity {
 			if (isBackKeyFlag()) {
 				goToHomeFragment();
 			} else {
-				//android.os.Process.killProcess(android.os.Process.myPid());
+				// android.os.Process.killProcess(android.os.Process.myPid());
 
 				Intent i = new Intent();
 				i.setAction(Intent.ACTION_MAIN);

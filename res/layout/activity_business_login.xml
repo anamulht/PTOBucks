@@ -47,7 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
-                android:hint="Vendor Number"
+                android:hint="Username"
+                android:text="adv1@admin.com"
                 android:inputType="text"
                 android:textColor="@color/white" />
 
@@ -57,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:hint="Password"
+                android:text="password"
                 android:inputType="textPassword"
                 android:textColor="@color/white" />
 
@@ -66,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="Incorrect Vendor No. or Password, Please Try Again"
+                android:text="Incorrect Username or Password, Please Try Again"
                 android:textAlignment="center"
                 android:textColor="#FF1111"
                 android:textSize="15sp"

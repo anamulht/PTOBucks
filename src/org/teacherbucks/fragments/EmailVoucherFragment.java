@@ -5,9 +5,14 @@ import org.teacherbucks.adapter.PromotionSpinnerAdapter;
 import org.teacherbucks.holder.PromotionHolder;
 import org.teacherbucks.model.Promotion;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +26,11 @@ public class EmailVoucherFragment extends Fragment {
 
 	private PromotionSpinnerAdapter spinnerAdapter;
 	private Spinner promotionSpinner;
+	Promotion selectedPromotion;
+	
 
+	static final int REQUEST_IMAGE_CAPTURE = 1;
+	
 	public EmailVoucherFragment() {
 		// TODO Auto-generated constructor stub
 	}
@@ -46,6 +55,19 @@ public class EmailVoucherFragment extends Fragment {
 				fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
 			}
 		});
+		
+		buttonSubmit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				
+				/*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+			        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+			    }*/
+
+			}
+		});
 
 		spinnerAdapter = new PromotionSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item,
 				PromotionHolder.getAllPromotionList());
@@ -56,7 +78,7 @@ public class EmailVoucherFragment extends Fragment {
 
 			@Override
 			public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-				Promotion promotionObj = spinnerAdapter.getItem(position);
+				selectedPromotion = spinnerAdapter.getItem(position);
 			}
 
 			@Override
@@ -66,5 +88,26 @@ public class EmailVoucherFragment extends Fragment {
 
 		return view;
 	}
+	
+	/*@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+        case 100:
+            if (resultCode == Activity.RESULT_OK) {
+                Uri selectedImage = imageUri;
+                getActivity().getContentResolver().notifyChange(selectedImage, null);
+                ContentResolver cr = getActivity().getContentResolver();
+                Bitmap bitmap;
+                try {
+                     bitmap = android.provider.MediaStore.Images.Media
+                     .getBitmap(cr, selectedImage);
+
+                } catch (Exception e) {
+                    
+                }
+            }
+        }
+    }*/
 
 }

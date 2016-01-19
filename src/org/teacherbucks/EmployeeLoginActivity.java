@@ -14,6 +14,7 @@ import org.apache.http.util.EntityUtils;
 import org.teacherbucks.BusinessLoginActivity.loadAsyncTask;
 import org.teacherbucks.holder.LogInDataHolder;
 import org.teacherbucks.parser.LogInParser;
+import org.teacherbucks.utils.Constant;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -77,7 +78,7 @@ public class EmployeeLoginActivity extends Activity {
 			try {
 
 				HttpClient httpclient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://104.131.229.197/api/v1/auth/login");
+				HttpPost httppost = new HttpPost(Constant.baseURL + "login");
 
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 				// emp3@admin.com password

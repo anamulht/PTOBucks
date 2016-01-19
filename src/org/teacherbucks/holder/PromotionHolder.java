@@ -24,6 +24,17 @@ public class PromotionHolder {
 		PromotionHolder.promotionModels.addElement(promotion);
 	}
 	
+	public static Promotion findPromotionWithId(String id){
+		Promotion promotion = new Promotion();
+		for (Promotion prom : promotionModels) {
+			if (prom.getId().equals(id)) {
+				promotion = prom;
+				break;
+			}
+		}
+		return promotion;
+	}
+	
 	public static void removePromotionList(){
 		PromotionHolder.promotionModels.removeAllElements();
 	}
