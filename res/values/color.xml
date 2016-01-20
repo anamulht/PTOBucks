@@ -36,5 +36,6 @@
     <color name="orrange">#e33d1b</color>
     <color name="darkorrange">#cc2303</color>
     <color name="mainpggetext">#ffffff</color>
+    <color name="red">#FF1111</color>
 
 </resources>

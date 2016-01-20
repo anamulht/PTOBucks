@@ -1,5 +1,6 @@
 package org.teacherbucks.fragments;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +23,23 @@ import org.teacherbucks.parser.VoucherCreateParser;
 import org.teacherbucks.parser.VoucherDeliveryParser;
 import org.teacherbucks.utils.Constant;
 
+import com.android.internal.http.multipart.MultipartEntity;
+
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,19 +107,13 @@ public class EmailVoucherFragment extends Fragment {
 			}
 		});
 
-		/*
-		 * buttonSubmit.setOnClickListener(new OnClickListener() {
-		 * 
-		 * @Override public void onClick(View arg0) {
-		 * 
-		 * Intent takePictureIntent = new
-		 * Intent(MediaStore.ACTION_IMAGE_CAPTURE); if
-		 * (takePictureIntent.resolveActivity(getActivity().getPackageManager())
-		 * != null) { startActivityForResult(takePictureIntent,
-		 * REQUEST_IMAGE_CAPTURE); }
-		 * 
-		 * } });
-		 */
+		buttonScanRcpt.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				takePhoto();
+			}
+		});
 
 		final AlertDialog.Builder builderDelvSuc = new AlertDialog.Builder(getActivity());
 		final AlertDialog.Builder builderDelvFail = new AlertDialog.Builder(getActivity());
@@ -182,21 +186,7 @@ public class EmailVoucherFragment extends Fragment {
 
 		return view;
 	}
-
-	/*
-	 * @Override public void onActivityResult(int requestCode, int resultCode,
-	 * Intent data) { super.onActivityResult(requestCode, resultCode, data);
-	 * switch (requestCode) { case 100: if (resultCode == Activity.RESULT_OK) {
-	 * Uri selectedImage = imageUri;
-	 * getActivity().getContentResolver().notifyChange(selectedImage, null);
-	 * ContentResolver cr = getActivity().getContentResolver(); Bitmap bitmap;
-	 * try { bitmap = android.provider.MediaStore.Images.Media .getBitmap(cr,
-	 * selectedImage);
-	 * 
-	 * } catch (Exception e) {
-	 * 
-	 * } } } }
-	 */
+	
 
 	class CreateVoucherAsyncTask extends AsyncTask<String, String, String> {
 
@@ -224,10 +214,9 @@ public class EmailVoucherFragment extends Fragment {
 				} else {
 					voucher_value = ((Double.parseDouble(selectedPromotion.getPer_offer_amount()) * sale_amount) / 100);
 				}
+				
 				nameValuePairs.add(new BasicNameValuePair("sale_total", sale_amount + ""));
-				nameValuePairs.add(new BasicNameValuePair("voucher_value", voucher_value + ""));
-
-				System.out.println(sale_amount + "----" + voucher_value);
+				nameValuePairs.add(new BasicNameValuePair("voucher_value", voucher_value + ""));				
 
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -315,5 +304,14 @@ public class EmailVoucherFragment extends Fragment {
 			}
 		}
 	}
+	
+	public void takePhoto() {
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                Uri.fromFile(photo));
+        ((MainActivity) getActivity()).setImageUri(Uri.fromFile(photo));
+        getActivity().startActivityForResult(intent, 100);
+    }
 
 }

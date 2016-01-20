@@ -26,6 +26,7 @@
             android:layout_weight="1"
             android:background="@color/green"
             android:gravity="center"
+            android:layout_marginLeft="15dp"
             android:orientation="horizontal" >
 
             <ImageView

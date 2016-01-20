@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="65dp"
     android:orientation="horizontal" >
 
     <LinearLayout
+        android:id="@+id/first_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="vertical" >
 
         <ImageView
+            android:id="@+id/employee_profile_photo"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/employee_thumbnail" />
@@ -23,10 +25,12 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/second_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:gravity="center"
+        android:layout_toRightOf="@+id/first_layout"
+        android:gravity="center_vertical"
         android:orientation="vertical" >
 
         <TextView
@@ -45,6 +49,23 @@
             android:text="232-456-123"
             android:textColor="#444444"
             android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/text_view_employee_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email@dot.com"
+            android:textColor="#444444"
+            android:textSize="12sp" />
     </LinearLayout>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/emp_list_gear_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/gear_icon" />
+
+</RelativeLayout>

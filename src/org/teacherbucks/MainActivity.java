@@ -1,14 +1,21 @@
 package org.teacherbucks;
 
+import java.net.URI;
+
 import org.teacherbucks.fragments.DataPreferencesFragment;
 import org.teacherbucks.fragments.HomeFragment;
+import org.teacherbucks.fragments.ManageEmployeeFragment;
 import org.teacherbucks.fragments.SalesDataFragment;
 import org.teacherbucks.holder.LogInDataHolder;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,12 +23,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 
 public class MainActivity extends Activity {
 
@@ -36,6 +45,34 @@ public class MainActivity extends Activity {
 
 	private boolean backKeyFlag = false;
 	private int userGroup = 0;
+	
+	private Uri imageUri;
+	private Bitmap voucherBitmap;
+	boolean isVoucherPicTaken;
+
+	public boolean isVoucherPicTaken() {
+		return isVoucherPicTaken;
+	}
+
+	public void setVoucherPicTaken(boolean isVoucherPicTaken) {
+		this.isVoucherPicTaken = isVoucherPicTaken;
+	}
+
+	public Bitmap getVoucherBitmap() {
+		return voucherBitmap;
+	}
+
+	public void setVoucherBitmap(Bitmap voucherBitmap) {
+		this.voucherBitmap = voucherBitmap;
+	}
+
+	public Uri getImageUri() {
+		return imageUri;
+	}
+
+	public void setImageUri(Uri imageUri) {
+		this.imageUri = imageUri;
+	}
 
 	public boolean isBackKeyFlag() {
 		return backKeyFlag;
@@ -120,7 +157,23 @@ public class MainActivity extends Activity {
 							setActionBarTitle("Settings");
 						}
 					});
+			
+			
+			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_manage_employees))
+			.setOnClickListener(new OnClickListener() {
 
+				@Override
+				public void onClick(View arg0) {
+					mDrawerLayout.closeDrawer(layout_slider);
+					backKeyFlag = true;
+					final FragmentManager fragmentManager = getFragmentManager();
+					fragmentManager.beginTransaction().replace(R.id.frame_container, new ManageEmployeeFragment())
+							.commit();
+					setActionBarTitle("Settings");
+				}
+			});
+
+			
 			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_log_out))
 					.setOnClickListener(new OnClickListener() {
 
@@ -192,4 +245,30 @@ public class MainActivity extends Activity {
 			return false;
 		}
 	}
+	
+	@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+        case 100:
+            if (resultCode == Activity.RESULT_OK) {
+                Uri selectedImage = getImageUri();
+                this.getContentResolver().notifyChange(selectedImage, null);
+                ContentResolver cr = this.getContentResolver();
+                Bitmap bitmap;
+                try {
+                     bitmap = android.provider.MediaStore.Images.Media
+                     .getBitmap(cr, selectedImage);
+
+                    setVoucherBitmap(bitmap);
+                    setVoucherPicTaken(true);
+                    
+                } catch (Exception e) {
+                    Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
+                            .show();
+                    Log.e("Camera", e.toString());
+                }
+            }
+        }
+    }
 }
