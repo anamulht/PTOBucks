@@ -89,7 +89,7 @@
                 android:background="@color/green"
                 android:paddingBottom="15dp"
                 android:paddingTop="15dp"
-                android:text="Generate QR"
+                android:text="Submit"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />

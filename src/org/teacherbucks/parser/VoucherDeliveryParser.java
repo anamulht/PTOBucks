@@ -14,6 +14,8 @@ public class VoucherDeliveryParser {
 		if (result.length() < 1) {
 			return false;
 		}
+		
+		System.out.println("result json: " + result);
 
 		final JSONObject mainJsonObject = new JSONObject(result);
 

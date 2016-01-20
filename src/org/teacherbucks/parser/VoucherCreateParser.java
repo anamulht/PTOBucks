@@ -20,6 +20,8 @@ public class VoucherCreateParser {
 			return false;
 		}
 
+		System.out.println("Voucher JSON: " + result);
+		
 		final JSONObject mainJsonObject = new JSONObject(result);
 
 		String status = mainJsonObject.getString("status");

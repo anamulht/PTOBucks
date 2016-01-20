@@ -20,6 +20,7 @@ import org.teacherbucks.holder.PromotionHolder;
 import org.teacherbucks.holder.VoucherHolder;
 import org.teacherbucks.model.Promotion;
 import org.teacherbucks.parser.VoucherCreateParser;
+import org.teacherbucks.parser.VoucherDeliveryParser;
 import org.teacherbucks.utils.Constant;
 
 import android.app.AlertDialog;
@@ -94,16 +95,13 @@ public class UsernameVoucherFragment extends Fragment {
 		});
 
 		final AlertDialog.Builder builderDelvSuc = new AlertDialog.Builder(getActivity());
-		builderDelvSuc.setCancelable(false);
-
-		View sucessView = inflater.inflate(R.layout.alert_success, null);
-		builderDelvSuc.setView(sucessView);
-
 		final AlertDialog.Builder builderDelvFail = new AlertDialog.Builder(getActivity());
+		
+		builderDelvSuc.setCancelable(false);
 		builderDelvFail.setCancelable(false);
-
-		View failView = inflater.inflate(R.layout.alert_failed, null);
-		builderDelvSuc.setView(failView);
+		
+		builderDelvSuc.setView(inflater.inflate(R.layout.alert_success, null));
+		builderDelvFail.setView(inflater.inflate(R.layout.alert_failed, null));
 
 		builderDelvSuc.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
@@ -123,13 +121,13 @@ public class UsernameVoucherFragment extends Fragment {
 
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
-				delvFailAlert.dismiss();
+/*				delvFailAlert.dismiss();
 				((MainActivity) getActivity())
 						.setActionBarTitle(LogInDataHolder.getLogInData().getCompany().getTitle());
 				((MainActivity) getActivity()).setBackKeyFlag(false);
 
 				final FragmentManager fragmentManager = getFragmentManager();
-				fragmentManager.beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();
+				fragmentManager.beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();*/
 			}
 		});
 
@@ -246,7 +244,7 @@ public class UsernameVoucherFragment extends Fragment {
 			try {
 
 				HttpClient httpclient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(Constant.baseURL + "/api/v1/vouchers/delivery/"
+				HttpPost httppost = new HttpPost(Constant.baseURL + "api/v1/vouchers/delivery/"
 						+ VoucherHolder.getVoucher().getId() + "?token=" + LogInDataHolder.getLogInData().getToken());
 
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -261,7 +259,7 @@ public class UsernameVoucherFragment extends Fragment {
 
 				String json_string = EntityUtils.toString(response.getEntity());
 
-				voucherDelivered = VoucherCreateParser.connect(getActivity(), json_string);
+				voucherDelivered = VoucherDeliveryParser.connect(getActivity(), json_string);
 
 			} catch (Exception e) {
 

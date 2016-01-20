@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <TextView
+            <!-- <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|left"
@@ -42,7 +42,7 @@
                 android:text="Settings"
                 android:textColor="@color/lightgray02"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold" /> -->
 
             <TextView
                 android:id="@+id/text_view_menu_manage_employees"
@@ -53,7 +53,8 @@
                 android:padding="12dp"
                 android:text="Manage Employees"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/manage_employee" />
 
             <TextView
                 android:id="@+id/text_view_menu_sales_data"
@@ -64,7 +65,8 @@
                 android:padding="12dp"
                 android:text="Manage Sales Data"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/manage_sales_data" />
 
             <TextView
                 android:id="@+id/text_view_menu_data_preferences"
