@@ -1,21 +1,34 @@
 package org.teacherbucks;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URI;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.teacherbucks.fragments.DataPreferencesFragment;
 import org.teacherbucks.fragments.HomeFragment;
 import org.teacherbucks.fragments.ManageEmployeeFragment;
 import org.teacherbucks.fragments.SalesDataFragment;
 import org.teacherbucks.holder.LogInDataHolder;
+import org.teacherbucks.utils.Constant;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -43,12 +56,23 @@ public class MainActivity extends Activity {
 	private LinearLayout layout_slider;
 	private ActionBarDrawerToggle mDrawerToggle;
 
+	ProgressDialog dialog;
+	
 	private boolean backKeyFlag = false;
 	private int userGroup = 0;
-	
+
 	private Uri imageUri;
 	private Bitmap voucherBitmap;
 	boolean isVoucherPicTaken;
+
+	
+	public int getUserGroup() {
+		return userGroup;
+	}
+
+	public void setUserGroup(int userGroup) {
+		this.userGroup = userGroup;
+	}
 
 	public boolean isVoucherPicTaken() {
 		return isVoucherPicTaken;
@@ -87,10 +111,16 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		userGroup = getIntent().getExtras().getInt("userG");
+		setUserGroup(getIntent().getExtras().getInt("userG"));
 
 		setCustomActionBarAndSetUpSlideMenu();
 		goToHomeFragment();
+		
+		dialog = new ProgressDialog(this);
+		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		dialog.setMessage("Please wait...");
+		dialog.setIndeterminate(true);
+		dialog.setCanceledOnTouchOutside(false);
 
 	}
 
@@ -157,33 +187,33 @@ public class MainActivity extends Activity {
 							setActionBarTitle("Settings");
 						}
 					});
-			
-			
+
 			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_manage_employees))
-			.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					mDrawerLayout.closeDrawer(layout_slider);
-					backKeyFlag = true;
-					final FragmentManager fragmentManager = getFragmentManager();
-					fragmentManager.beginTransaction().replace(R.id.frame_container, new ManageEmployeeFragment())
-							.commit();
-					setActionBarTitle("Settings");
-				}
-			});
-
-			
-			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_log_out))
 					.setOnClickListener(new OnClickListener() {
 
 						@Override
 						public void onClick(View arg0) {
 							mDrawerLayout.closeDrawer(layout_slider);
-							Intent intent = new Intent(MainActivity.this, LoginChooserActivity.class);
-							startActivity(intent);
+							backKeyFlag = true;
+							final FragmentManager fragmentManager = getFragmentManager();
+							fragmentManager.beginTransaction()
+									.replace(R.id.frame_container, new ManageEmployeeFragment()).commit();
+							setActionBarTitle("Settings");
 						}
 					});
+
+			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_log_out))
+					.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View arg0) {
+							new LogOutAsyncTask().execute("params");
+						}
+					});
+			
+			((TextView) sliderMenuContent.findViewById(R.id.textview_menu_banner_title_biz))
+			.setText(LogInDataHolder.getLogInData().getCompany().getTitle());
+			
 		} else if (userGroup == 1) {
 			sliderMenuContent = mInflater.inflate(R.layout.slider_menu_layout_employee, null);
 
@@ -192,11 +222,12 @@ public class MainActivity extends Activity {
 
 						@Override
 						public void onClick(View arg0) {
-							mDrawerLayout.closeDrawer(layout_slider);
-							Intent intent = new Intent(MainActivity.this, LoginChooserActivity.class);
-							startActivity(intent);
+							new LogOutAsyncTask().execute("param");
 						}
 					});
+			
+			((TextView) sliderMenuContent.findViewById(R.id.textview_menu_banner_title_emp))
+			.setText(LogInDataHolder.getLogInData().getUser().getName());
 		}
 
 		layout_slider.addView(sliderMenuContent);
@@ -245,30 +276,66 @@ public class MainActivity extends Activity {
 			return false;
 		}
 	}
-	
-	@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-        case 100:
-            if (resultCode == Activity.RESULT_OK) {
-                Uri selectedImage = getImageUri();
-                this.getContentResolver().notifyChange(selectedImage, null);
-                ContentResolver cr = this.getContentResolver();
-                Bitmap bitmap;
-                try {
-                     bitmap = android.provider.MediaStore.Images.Media
-                     .getBitmap(cr, selectedImage);
 
-                    setVoucherBitmap(bitmap);
-                    setVoucherPicTaken(true);
-                    
-                } catch (Exception e) {
-                    Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
-                            .show();
-                    Log.e("Camera", e.toString());
-                }
-            }
-        }
-    }
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case 100:
+			if (resultCode == Activity.RESULT_OK) {
+				Uri selectedImage = getImageUri();
+				this.getContentResolver().notifyChange(selectedImage, null);
+				ContentResolver cr = this.getContentResolver();
+				Bitmap bitmap;
+				try {
+					bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, selectedImage);
+
+					setVoucherBitmap(bitmap);
+					setVoucherPicTaken(true);
+
+				} catch (Exception e) {
+					Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+					Log.e("Camera", e.toString());
+				}
+			}
+		}
+	}
+	
+	class LogOutAsyncTask extends AsyncTask<String, String, String>{
+
+		@Override
+		protected void onPreExecute() {
+			dialog.show();
+			super.onPreExecute();
+		}
+
+		@Override
+		protected String doInBackground(String... arg0) {
+			HttpClient httpclient = new DefaultHttpClient();
+	        HttpResponse response;
+	        String responseString = null;
+	        try {
+	            response = httpclient.execute(new HttpGet(Constant.baseURL + "api/v1/auth/logout?token=" + LogInDataHolder.getLogInData().getToken()));
+	            
+	        } catch (ClientProtocolException e) {
+	            //TODO Handle problems..
+	        } catch (IOException e) {
+	            //TODO Handle problems..
+	        }
+			return null;
+		}
+		
+		protected void onProgressUpdate(String... progress) {
+			Log.d("ANDRO_ASYNC", progress[0]);
+		}
+
+		@Override
+		protected void onPostExecute(String unused) {
+			dialog.dismiss();
+			mDrawerLayout.closeDrawer(layout_slider);
+			Intent intent = new Intent(MainActivity.this, LoginChooserActivity.class);
+			startActivity(intent);
+		}
+		
+	}
 }

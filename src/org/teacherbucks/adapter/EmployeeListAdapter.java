@@ -3,13 +3,10 @@ package org.teacherbucks.adapter;
 import org.teacherbucks.R;
 import org.teacherbucks.holder.EmployeeHolder;
 import org.teacherbucks.model.Employee;
-import org.teacherbucks.utils.ImageLoader;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +48,11 @@ public class EmployeeListAdapter extends ArrayAdapter<Employee> {
 			holder.indicator = v.findViewById(R.id.action_bar_activity_content);
 
 			v.setTag(holder);
+			
 		} else {
+			
 			holder = (ViewHolder) v.getTag();
+			
 		}
 
 		if (position < EmployeeHolder.getAllEmployees().size()) {
@@ -61,11 +61,11 @@ public class EmployeeListAdapter extends ArrayAdapter<Employee> {
 			holder.phone.setText(emp.getPhone().toString());
 			holder.email.setText(emp.getEmail().toString());
 			UrlImageViewHelper.setUrlDrawable(holder.photo, emp.getImage().toString(), R.drawable.employee_thumbnail);
-			if (emp.getStatus() == 1) {
+			/*if (emp.getStatus() == 1) {
 				holder.indicator.setBackgroundResource(R.color.green);
 			} else {
 				holder.indicator.setBackgroundResource(R.color.red);
-			}
+			}*/
 		}
 
 		return v;

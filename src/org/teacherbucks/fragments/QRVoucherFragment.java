@@ -1,5 +1,6 @@
 package org.teacherbucks.fragments;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.teacherbucks.MainActivity;
 import org.teacherbucks.R;
 import org.teacherbucks.adapter.PromotionSpinnerAdapter;
 import org.teacherbucks.holder.LogInDataHolder;
@@ -22,8 +24,12 @@ import org.teacherbucks.utils.Constant;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +84,15 @@ public class QRVoucherFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 				new CreateVoucherAsyncTask().execute("text");
+				
+			}
+		});
+		
+		buttonScanRcpt.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				takePhoto();
 				
 			}
 		});
@@ -167,5 +182,14 @@ public class QRVoucherFragment extends Fragment {
 			}
 		}
 	}
+	
+	public void takePhoto() {
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                Uri.fromFile(photo));
+        ((MainActivity) getActivity()).setImageUri(Uri.fromFile(photo));
+        getActivity().startActivityForResult(intent, 100);
+    }
 
 }

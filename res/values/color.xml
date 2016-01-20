@@ -37,5 +37,6 @@
     <color name="darkorrange">#cc2303</color>
     <color name="mainpggetext">#ffffff</color>
     <color name="red">#FF1111</color>
+    <color name="dark_gray">#494949</color>
 
 </resources>

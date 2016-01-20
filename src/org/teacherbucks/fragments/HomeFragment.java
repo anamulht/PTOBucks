@@ -48,9 +48,13 @@ public class HomeFragment extends Fragment {
 		SMS = (TextView) view.findViewById(R.id.text_view_sms_delivery);
 		UserName = (TextView) view.findViewById(R.id.text_view_username_delivery);
 		QRCode = (TextView) view.findViewById(R.id.text_view_qr_delivery);
-
-		((TextView) view.findViewById(R.id.home_header)).setText(LogInDataHolder.getLogInData().getCompany().getTitle()
-				+ "\n" + LogInDataHolder.getLogInData().getCompany().getAddress());
+		if (((MainActivity) getActivity()).getUserGroup() == 0) {
+			((TextView) view.findViewById(R.id.home_header)).setText(LogInDataHolder.getLogInData().getCompany().getTitle()
+					+ "\n" + LogInDataHolder.getLogInData().getCompany().getAddress());
+		} else {
+			((TextView) view.findViewById(R.id.home_header)).setText(LogInDataHolder.getLogInData().getUser().getName()
+					+ "\n" + LogInDataHolder.getLogInData().getUser().getPhone());
+		} 
 		// Toast.makeText(container.getContext(), "YES",
 		// Toast.LENGTH_LONG).show();
 

@@ -1,5 +1,6 @@
 package org.teacherbucks.fragments;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +29,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +96,15 @@ public class SMSVoucherFragment extends Fragment {
 			public void onClick(View arg0) {
 				new CreateVoucherAsyncTask().execute("text");
 
+			}
+		});
+		
+		buttonScanRcpt.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				takePhoto();
+				
 			}
 		});
 
@@ -280,5 +294,14 @@ public class SMSVoucherFragment extends Fragment {
 			}
 		}
 	}
+	
+	public void takePhoto() {
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                Uri.fromFile(photo));
+        ((MainActivity) getActivity()).setImageUri(Uri.fromFile(photo));
+        getActivity().startActivityForResult(intent, 100);
+    }
 
 }
