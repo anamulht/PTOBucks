@@ -134,7 +134,8 @@ public class ManageEmployeeFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				optionsAlert.dismiss();
+				//optionsAlert.dismiss();
+				Toast.makeText(getActivity(), "This option is Disabled !", Toast.LENGTH_SHORT).show();
 			}
 		});
 

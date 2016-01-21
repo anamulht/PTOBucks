@@ -553,10 +553,10 @@ int id biz_login_password 0x7f090051
 int id biz_login_vendor_num 0x7f090050
 int id business_details_layout 0x7f090079
 int id buttonPanel 0x7f09002b
-int id button_business_login 0x7f090059
+int id button_business_login 0x7f090058
 int id button_business_login_action 0x7f090053
 int id button_data_pref_submit 0x7f09008a
-int id button_employee_login 0x7f090058
+int id button_employee_login 0x7f090059
 int id button_employee_login_action 0x7f090057
 int id button_sales_data_submit 0x7f090095
 int id cancel_action 0x7f0900ad

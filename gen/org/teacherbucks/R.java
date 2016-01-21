@@ -2116,10 +2116,10 @@ containing a value of this type.
         public static final int biz_login_vendor_num=0x7f090050;
         public static final int business_details_layout=0x7f090079;
         public static final int buttonPanel=0x7f09002b;
-        public static final int button_business_login=0x7f090059;
+        public static final int button_business_login=0x7f090058;
         public static final int button_business_login_action=0x7f090053;
         public static final int button_data_pref_submit=0x7f09008a;
-        public static final int button_employee_login=0x7f090058;
+        public static final int button_employee_login=0x7f090059;
         public static final int button_employee_login_action=0x7f090057;
         public static final int button_sales_data_submit=0x7f090095;
         public static final int cancel_action=0x7f0900ad;
