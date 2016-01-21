@@ -277,7 +277,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	@Override
+	/*@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
@@ -298,6 +298,23 @@ public class MainActivity extends Activity {
 					Log.e("Camera", e.toString());
 				}
 			}
+		}
+	}*/
+	
+	@Override 
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) { 
+	    super.onActivityResult(requestCode, resultCode, data); 
+
+	    switch (requestCode) {
+		case 100:
+			if (RESULT_OK == resultCode) { 
+		        // Get Extra from the intent 
+		        Bundle extras = data.getExtras(); 
+		        // Get the returned image from extra 
+		        Bitmap bmp = (Bitmap) extras.get("data"); 
+
+		        Toast.makeText(this, bmp.toString(), Toast.LENGTH_LONG).show();
+		    } 
 		}
 	}
 	

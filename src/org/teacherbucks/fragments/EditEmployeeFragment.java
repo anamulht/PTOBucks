@@ -11,13 +11,17 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.teacherbucks.MainActivity;
 import org.teacherbucks.R;
+import org.teacherbucks.holder.EmployeeHolder;
 import org.teacherbucks.holder.LogInDataHolder;
+import org.teacherbucks.model.Employee;
 import org.teacherbucks.parser.AddEmployeeParser;
 import org.teacherbucks.utils.Constant;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +33,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EditEmployeeFragment extends Fragment {
 	
@@ -40,10 +45,12 @@ public class EditEmployeeFragment extends Fragment {
 	private Button btnSubmit;
 	
 	ProgressDialog dialog;
-	boolean isEmployeeAdded;
+	boolean isEmployeeEdited;
 	
 	private AlertDialog sucAlert;
 	private AlertDialog failAlert;
+	
+	private Employee selecEmployee;
 	
 	
 	@Override
@@ -51,12 +58,27 @@ public class EditEmployeeFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_edit_employee, container, false);
 		
+		Bundle bundle = getArguments();
+		String id = bundle.getString("emp");
+		
+		selecEmployee = EmployeeHolder.findEmployeeWithId(id);
+		
+		//Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
+		
 		firstName = (EditText) view.findViewById(R.id.edit_emp_first_name);
 		lastName = (EditText) view.findViewById(R.id.edit_emp_last_name);
 		cellPhone = (EditText) view.findViewById(R.id.edit_emp_cell_phn);
 		email = (EditText) view.findViewById(R.id.edit_emp_email);
 		password = (EditText) view.findViewById(R.id.edit_emp_pass);
 		btnSubmit = (Button) view.findViewById(R.id.edit_emp_submit);
+		
+		String[] name = selecEmployee.getName().split("\\s+");
+		
+		firstName.setText(name[0]);
+		lastName.setText(name[1]);
+		cellPhone.setText(selecEmployee.getPhone());
+		email.setText(selecEmployee.getEmail());
+		
 		
 		dialog = new ProgressDialog(getActivity());
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -109,7 +131,7 @@ public class EditEmployeeFragment extends Fragment {
 			try {
 
 				HttpClient httpclient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(Constant.baseURL + "/api/v1/employees/update/{id}" + LogInDataHolder.getLogInData().getToken());
+				HttpPost httppost = new HttpPost(Constant.baseURL + "api/v1/employees/update/" + selecEmployee.getId() + "?token=" + LogInDataHolder.getLogInData().getToken());
 				
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
 				
@@ -126,7 +148,7 @@ public class EditEmployeeFragment extends Fragment {
 
 				String json_string = EntityUtils.toString(response.getEntity());
 
-				isEmployeeAdded = AddEmployeeParser.connect(getActivity(), json_string);
+				isEmployeeEdited = AddEmployeeParser.connect(getActivity(), json_string);
 
 			} catch (Exception e) {
 
@@ -141,9 +163,13 @@ public class EditEmployeeFragment extends Fragment {
 		@Override
 		protected void onPostExecute(String unused) {
 			dialog.dismiss();
-			if (isEmployeeAdded) {
+			if (isEmployeeEdited) {
 				//Toast.makeText(getActivity(), "added", Toast.LENGTH_LONG).show();
 				sucAlert.show();
+				final FragmentManager fragmentManager = getFragmentManager();
+				fragmentManager.beginTransaction()
+						.replace(R.id.frame_container, new ManageEmployeeFragment()).commit();
+				((MainActivity) getActivity()).setActionBarTitle("Settings");
 			} else {
 				//Toast.makeText(getActivity(), "failed", Toast.LENGTH_LONG).show();
 				failAlert.show();

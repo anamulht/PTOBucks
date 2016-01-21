@@ -45,7 +45,7 @@ public class EmployeeListAdapter extends ArrayAdapter<Employee> {
 			holder.phone = (TextView) v.findViewById(R.id.text_view_employee_contact_no);
 			holder.email = (TextView) v.findViewById(R.id.text_view_employee_email);
 			holder.photo = (ImageView) v.findViewById(R.id.employee_profile_photo);
-			holder.indicator = v.findViewById(R.id.action_bar_activity_content);
+			holder.indicator = (View) v.findViewById(R.id.employee_active_deactive);
 
 			v.setTag(holder);
 			
@@ -60,12 +60,13 @@ public class EmployeeListAdapter extends ArrayAdapter<Employee> {
 			holder.name.setText(emp.getName().toString());
 			holder.phone.setText(emp.getPhone().toString());
 			holder.email.setText(emp.getEmail().toString());
-			UrlImageViewHelper.setUrlDrawable(holder.photo, emp.getImage().toString(), R.drawable.employee_thumbnail);
-			/*if (emp.getStatus() == 1) {
+			//System.out.println("emp status" + emp.getStatus());
+			if (emp.getStatus() == 1) {
 				holder.indicator.setBackgroundResource(R.color.green);
 			} else {
 				holder.indicator.setBackgroundResource(R.color.red);
-			}*/
+			}
+			UrlImageViewHelper.setUrlDrawable(holder.photo, emp.getImage().toString(), R.drawable.employee_thumbnail);
 		}
 
 		return v;

@@ -19,7 +19,7 @@ public class LogInParser {
 	public static boolean connect(Context context, String result) throws JSONException, IOException {
 
 		LogInDataHolder.removeLogInData();
-
+		PromotionHolder.removePromotionList();
 		// System.out.println("json string:" + result);
 
 		if (result.length() < 1) {

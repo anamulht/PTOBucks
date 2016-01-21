@@ -19,7 +19,7 @@
             android:id="@+id/business_details_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#494949"
+            android:background="@color/dark_gray"
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingBottom="10dp"
@@ -123,7 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
                     android:layout_marginRight="5dp"
-                    android:background="#28db8e" />
+                    android:background="@color/dark_gray" />
             </LinearLayout>
 
             <LinearLayout
@@ -151,7 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
                     android:layout_marginLeft="5dp"
-                    android:background="#835194" />
+                    android:background="@color/dark_gray" />
             </LinearLayout>
         </LinearLayout>
 
@@ -192,7 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
                     android:layout_marginRight="5dp"
-                    android:background="#00a3e0" />
+                    android:background="@color/dark_gray" />
             </LinearLayout>
 
             <LinearLayout
@@ -220,7 +220,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
                     android:layout_marginLeft="5dp"
-                    android:background="#fa5072" />
+                    android:background="@color/dark_gray" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

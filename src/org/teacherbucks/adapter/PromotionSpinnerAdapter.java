@@ -6,6 +6,7 @@ import org.teacherbucks.model.Promotion;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -52,7 +53,8 @@ public class PromotionSpinnerAdapter extends ArrayAdapter<Promotion> {
 		TextView label = new TextView(context);
 		label.setTextColor(Color.BLACK);
 		label.setText(itemList.get(position).getTitle());
-		label.setPadding(10, 10, 10, 10);
+		label.setPadding(20, 20, 20, 20);
+		label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 		return label;
 	}
 
