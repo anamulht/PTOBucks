@@ -296,11 +296,14 @@ public class SMSVoucherFragment extends Fragment {
 	}
 	
 	public void takePhoto() {
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        /*Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
         intent.putExtra(MediaStore.EXTRA_OUTPUT,
                 Uri.fromFile(photo));
         ((MainActivity) getActivity()).setImageUri(Uri.fromFile(photo));
+        getActivity().startActivityForResult(intent, 100);*/
+		
+		Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
         getActivity().startActivityForResult(intent, 100);
     }
 

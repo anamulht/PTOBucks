@@ -19,8 +19,11 @@ import org.teacherbucks.utils.Constant;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,14 +40,23 @@ public class EmployeeLoginActivity extends Activity {
 	EditText password;
 	boolean login;
 	TextView loginFailedMsg;
+	
+	SharedPreferences sharedPreferences;
+	Editor editor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_employee_login);
 		getActionBar().hide();
+		
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		editor = sharedPreferences.edit();
+		
+		String empUser = sharedPreferences.getString("tb_login_emp", "");
 
 		empUsername = (EditText) findViewById(R.id.emp_login_username);
+		empUsername.setText(empUser);
 		password = (EditText) findViewById(R.id.emp_login_password);
 		loginFailedMsg = (TextView) findViewById(R.id.emp_login_failed_msg);
 		
@@ -114,6 +126,8 @@ public class EmployeeLoginActivity extends Activity {
 				} else {
 					intent.putExtra("userG", 0);
 				}
+				editor.putString("tb_login_emp", empUsername.getText().toString());
+				editor.commit();
 				startActivity(intent);
 			} else {
 				loginFailedMsg.setVisibility(View.VISIBLE);

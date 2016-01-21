@@ -1,5 +1,6 @@
 package org.teacherbucks.fragments;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import org.teacherbucks.parser.VoucherCreateParser;
 import org.teacherbucks.parser.VoucherDeliveryParser;
 import org.teacherbucks.utils.Constant;
 
-import com.android.internal.http.multipart.MultipartEntity;
+import com.android.internal.http.multipart.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,6 +41,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -206,7 +208,13 @@ public class EmailVoucherFragment extends Fragment {
 				System.out.println("url: " + Constant.baseURL + "api/v1/vouchers/" + selectedPromotion.getId()
 						+ "?token=" + LogInDataHolder.getLogInData().getToken());
 				// http://104.131.229.197/api/v1/vouchers/1?token=eyJ0eXAiOiJKV1QiL
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+				
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				((MainActivity) getActivity()).getVoucherBitmap().compress(Bitmap.CompressFormat.JPEG, 100, baos);
+				byte[] imageBytes = baos.toByteArray();
+				String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+				System.out.println("image" + encodedImage);
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 				double sale_amount = Double.parseDouble(saleAmount.getText().toString());
 				double voucher_value;
 				if (selectedPromotion.getType_of_offer().equalsIgnoreCase("cash")) {
@@ -216,7 +224,8 @@ public class EmailVoucherFragment extends Fragment {
 				}
 				
 				nameValuePairs.add(new BasicNameValuePair("sale_total", sale_amount + ""));
-				nameValuePairs.add(new BasicNameValuePair("voucher_value", voucher_value + ""));				
+				nameValuePairs.add(new BasicNameValuePair("voucher_value", voucher_value + ""));
+				nameValuePairs.add(new BasicNameValuePair("image", encodedImage));
 
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 

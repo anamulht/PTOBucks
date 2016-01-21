@@ -313,7 +313,10 @@ public class MainActivity extends Activity {
 		        // Get the returned image from extra 
 		        Bitmap bmp = (Bitmap) extras.get("data"); 
 
-		        Toast.makeText(this, bmp.toString(), Toast.LENGTH_LONG).show();
+		        setVoucherBitmap(bmp);
+				setVoucherPicTaken(true);
+				
+		        //Toast.makeText(this, bmp.toString(), Toast.LENGTH_LONG).show();
 		    } 
 		}
 	}

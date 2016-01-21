@@ -17,9 +17,13 @@ import org.teacherbucks.utils.Constant;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -33,6 +37,9 @@ public class BusinessLoginActivity extends Activity {
 	EditText password;
 	boolean login;
 	TextView loginFailedMsg;
+	
+	SharedPreferences sharedPreferences;
+	Editor editor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +47,14 @@ public class BusinessLoginActivity extends Activity {
 		setContentView(R.layout.activity_business_login);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getActionBar().hide();
+		
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		editor = sharedPreferences.edit();
+		
+		String vendorEmail = sharedPreferences.getString("tb_login_biz", "");
 
 		vendorNo = (EditText) findViewById(R.id.biz_login_vendor_num);
+		vendorNo.setText(vendorEmail);
 		password = (EditText) findViewById(R.id.biz_login_password);
 		loginFailedMsg = (TextView) findViewById(R.id.biz_login_failed_msg);
 
@@ -50,6 +63,7 @@ public class BusinessLoginActivity extends Activity {
 		dialog.setMessage("Please wait...");
 		dialog.setIndeterminate(true);
 		dialog.setCanceledOnTouchOutside(false);
+			
 
 	}
 
@@ -109,6 +123,8 @@ public class BusinessLoginActivity extends Activity {
 					//intent.putExtra("userG", 1);
 				//} else {
 					intent.putExtra("userG", 0);
+					editor.putString("tb_login_biz", vendorNo.getText().toString());
+					editor.commit();
 				//}
 				startActivity(intent);
 			} else {
