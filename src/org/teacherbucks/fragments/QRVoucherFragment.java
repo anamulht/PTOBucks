@@ -1,5 +1,6 @@
 package org.teacherbucks.fragments;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,13 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +81,8 @@ public class QRVoucherFragment extends Fragment {
 		dialog.setMessage("Please wait...");
 		dialog.setIndeterminate(true);
 		dialog.setCanceledOnTouchOutside(false);
+		
+		((MainActivity) getActivity()).setVoucherPicTaken(false);
 		
 		buttonSubmit.setOnClickListener(new OnClickListener() {
 			
@@ -145,7 +150,16 @@ public class QRVoucherFragment extends Fragment {
 				}
 				nameValuePairs.add(new BasicNameValuePair("sale_total", sale_amount + ""));
 				nameValuePairs.add(new BasicNameValuePair("voucher_value", voucher_value + ""));
-
+				if (((MainActivity) getActivity()).isVoucherPicTaken()) {
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					((MainActivity) getActivity()).getVoucherBitmap().compress(Bitmap.CompressFormat.JPEG, 100, baos);
+					byte[] imageBytes = baos.toByteArray();
+					String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+					System.out.println("image::" + encodedImage);
+					nameValuePairs.add(new BasicNameValuePair("image", encodedImage));
+				}else{
+					System.out.println("image not taken");
+				}
 				System.out.println(sale_amount + "----" + voucher_value);
 
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -171,6 +185,7 @@ public class QRVoucherFragment extends Fragment {
 		protected void onPostExecute(String unused) {
 			dialog.dismiss();
 			if (voucherCreated) {
+				((MainActivity) getActivity()).setVoucherPicTaken(false);
 				final FragmentManager fragmentManager = getFragmentManager();
 				Fragment fragment = new QRCodeFragment();
 				Bundle bundle = new Bundle();

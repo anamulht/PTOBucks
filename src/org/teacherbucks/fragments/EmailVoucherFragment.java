@@ -98,6 +98,8 @@ public class EmailVoucherFragment extends Fragment {
 		dialog.setMessage("Please wait...");
 		dialog.setIndeterminate(true);
 		dialog.setCanceledOnTouchOutside(false);
+		
+		((MainActivity) getActivity()).setVoucherPicTaken(false);
 
 		buttonSubmit.setClickable(true);
 		buttonSubmit.setOnClickListener(new OnClickListener() {
@@ -209,11 +211,6 @@ public class EmailVoucherFragment extends Fragment {
 						+ "?token=" + LogInDataHolder.getLogInData().getToken());
 				// http://104.131.229.197/api/v1/vouchers/1?token=eyJ0eXAiOiJKV1QiL
 				
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				((MainActivity) getActivity()).getVoucherBitmap().compress(Bitmap.CompressFormat.JPEG, 100, baos);
-				byte[] imageBytes = baos.toByteArray();
-				String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-				System.out.println("image" + encodedImage);
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 				double sale_amount = Double.parseDouble(saleAmount.getText().toString());
 				double voucher_value;
@@ -225,7 +222,16 @@ public class EmailVoucherFragment extends Fragment {
 				
 				nameValuePairs.add(new BasicNameValuePair("sale_total", sale_amount + ""));
 				nameValuePairs.add(new BasicNameValuePair("voucher_value", voucher_value + ""));
-				nameValuePairs.add(new BasicNameValuePair("image", encodedImage));
+				if (((MainActivity) getActivity()).isVoucherPicTaken()) {
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					((MainActivity) getActivity()).getVoucherBitmap().compress(Bitmap.CompressFormat.JPEG, 100, baos);
+					byte[] imageBytes = baos.toByteArray();
+					String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+					System.out.println("image::" + encodedImage);
+					nameValuePairs.add(new BasicNameValuePair("image", encodedImage));
+				}else{
+					System.out.println("image not taken");
+				}
 
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -250,6 +256,7 @@ public class EmailVoucherFragment extends Fragment {
 		protected void onPostExecute(String unused) {
 			dialog.dismiss();
 			if (voucherCreated) {
+				((MainActivity) getActivity()).setVoucherPicTaken(false);
 				Toast.makeText(getActivity(), "Voucher Created, Press Delivery.", Toast.LENGTH_SHORT).show();
 				buttonSubmit.setVisibility(View.GONE);
 				buttonScanRcpt.setVisibility(View.GONE);

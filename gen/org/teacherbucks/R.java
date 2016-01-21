@@ -2069,15 +2069,16 @@ containing a value of this type.
         public static final int log_out=0x7f020063;
         public static final int login_background=0x7f020064;
         public static final int login_chooser=0x7f020065;
-        public static final int manage_employee=0x7f020066;
-        public static final int manage_sales_data=0x7f020067;
-        public static final int menu=0x7f020068;
-        public static final int notification_template_icon_bg=0x7f02006e;
-        public static final int slide_menu_banner_2=0x7f020069;
-        public static final int slider_menu_banner=0x7f02006a;
-        public static final int splash=0x7f02006b;
-        public static final int success_icon=0x7f02006c;
-        public static final int terms_conditions=0x7f02006d;
+        public static final int login_chooser_white=0x7f020066;
+        public static final int manage_employee=0x7f020067;
+        public static final int manage_sales_data=0x7f020068;
+        public static final int menu=0x7f020069;
+        public static final int notification_template_icon_bg=0x7f02006f;
+        public static final int slide_menu_banner_2=0x7f02006a;
+        public static final int slider_menu_banner=0x7f02006b;
+        public static final int splash=0x7f02006c;
+        public static final int success_icon=0x7f02006d;
+        public static final int terms_conditions=0x7f02006e;
     }
     public static final class id {
         public static final int action0=0x7f0900ac;

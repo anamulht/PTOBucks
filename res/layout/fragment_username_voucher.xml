@@ -37,7 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:background="@drawable/edittextstyle"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:gravity="right" />
 
         <TextView
             android:layout_width="match_parent"
