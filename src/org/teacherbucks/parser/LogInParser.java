@@ -42,7 +42,8 @@ public class LogInParser {
 
 			userModel = new User();
 			userModel.setEmail(user.getString("email"));
-			userModel.setName(user.getString("name"));
+			userModel.setFirst_name(user.getString("first_name"));
+			userModel.setLast_name(user.getString("last_name"));
 			userModel.setAddress(user.getString("address"));
 			userModel.setPhone(user.getString("phone"));
 			userModel.setType(user.getString("type"));

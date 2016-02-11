@@ -85,7 +85,7 @@ public class EmailVoucherFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_email_voucher, container, false);
 
-		buttonSubmit = (Button) view.findViewById(R.id.email_delv_submit);
+		
 		buttonScanRcpt = (Button) view.findViewById(R.id.email_delv_scn_rcpt);
 
 		buttonDelv = (Button) view.findViewById(R.id.email_delv_delivery);
@@ -106,8 +106,12 @@ public class EmailVoucherFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-
-				new CreateVoucherAsyncTask().execute("text");
+				if (saleAmount.getText().toString().equals("") || saleAmount.getText().toString().equals(null)) {
+					Toast.makeText(getActivity(), "Enter Sale Amount", Toast.LENGTH_SHORT).show();
+				} else {
+					new CreateVoucherAsyncTask().execute("text");
+				}
+				
 			}
 		});
 
@@ -164,7 +168,7 @@ public class EmailVoucherFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 				if (customerEmail.getText().toString().equals("") || customerEmail.getText().toString().equals(null)) {
-					Toast.makeText(getActivity(), "Enter Customer's Email Address.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Enter Customer's Email Address", Toast.LENGTH_SHORT).show();
 				} else {
 					new VoucherDeliveryAsyncTask().execute("text");
 				}

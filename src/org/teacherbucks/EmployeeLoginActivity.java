@@ -21,6 +21,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -29,8 +30,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public class EmployeeLoginActivity extends Activity {
@@ -65,6 +68,16 @@ public class EmployeeLoginActivity extends Activity {
 		dialog.setMessage("Please wait...");
 		dialog.setIndeterminate(true);
 		dialog.setCanceledOnTouchOutside(false);
+		
+		((TextView)findViewById(R.id.text_view_forgot_pass_emp))
+		.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://104.131.229.197/password/email"));
+				startActivity(browserIntent);
+			}
+		});
 	}
 
 	public void goToEmployeeLoginAction(View view) {
@@ -82,6 +95,7 @@ public class EmployeeLoginActivity extends Activity {
 		@Override
 		protected void onPreExecute() {
 			dialog.show();
+			loginFailedMsg.setVisibility(View.GONE);
 			super.onPreExecute();
 		}
 
@@ -123,12 +137,13 @@ public class EmployeeLoginActivity extends Activity {
 				Intent intent = new Intent(EmployeeLoginActivity.this, MainActivity.class);
 				if (LogInDataHolder.getLogInData().getUser().getType().equalsIgnoreCase("employee")) {
 					intent.putExtra("userG", 1);
+					editor.putString("tb_login_emp", empUsername.getText().toString());
+					editor.commit();
+					startActivity(intent);
 				} else {
-					intent.putExtra("userG", 0);
+					Toast.makeText(EmployeeLoginActivity.this, "Try in Business Login", Toast.LENGTH_LONG).show();
 				}
-				editor.putString("tb_login_emp", empUsername.getText().toString());
-				editor.commit();
-				startActivity(intent);
+				
 			} else {
 				loginFailedMsg.setVisibility(View.VISIBLE);
 			}

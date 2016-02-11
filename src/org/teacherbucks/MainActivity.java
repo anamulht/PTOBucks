@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.teacherbucks.fragments.DataPreferencesFragment;
+import org.teacherbucks.fragments.EmpChangePassword;
 import org.teacherbucks.fragments.HomeFragment;
 import org.teacherbucks.fragments.ManageEmployeeFragment;
 import org.teacherbucks.fragments.SalesDataFragment;
@@ -57,7 +58,7 @@ public class MainActivity extends Activity {
 	private ActionBarDrawerToggle mDrawerToggle;
 
 	ProgressDialog dialog;
-	
+
 	private boolean backKeyFlag = false;
 	private int userGroup = 0;
 
@@ -65,7 +66,6 @@ public class MainActivity extends Activity {
 	private Bitmap voucherBitmap;
 	boolean isVoucherPicTaken;
 
-	
 	public int getUserGroup() {
 		return userGroup;
 	}
@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
 
 		setCustomActionBarAndSetUpSlideMenu();
 		goToHomeFragment();
-		
+
 		dialog = new ProgressDialog(this);
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		dialog.setMessage("Please wait...");
@@ -210,10 +210,10 @@ public class MainActivity extends Activity {
 							new LogOutAsyncTask().execute("params");
 						}
 					});
-			
+
 			((TextView) sliderMenuContent.findViewById(R.id.textview_menu_banner_title_biz))
-			.setText(LogInDataHolder.getLogInData().getCompany().getTitle());
-			
+					.setText(LogInDataHolder.getLogInData().getCompany().getTitle());
+
 		} else if (userGroup == 1) {
 			sliderMenuContent = mInflater.inflate(R.layout.slider_menu_layout_employee, null);
 
@@ -226,8 +226,23 @@ public class MainActivity extends Activity {
 						}
 					});
 			
+			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_change_pass_emp))
+			.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					mDrawerLayout.closeDrawer(layout_slider);
+					backKeyFlag = true;
+					final FragmentManager fragmentManager = getFragmentManager();
+					fragmentManager.beginTransaction()
+							.replace(R.id.frame_container, new EmpChangePassword()).commit();
+					setActionBarTitle("Change Password");
+				}
+			});
+
 			((TextView) sliderMenuContent.findViewById(R.id.textview_menu_banner_title_emp))
-			.setText(LogInDataHolder.getLogInData().getUser().getName());
+					.setText(LogInDataHolder.getLogInData().getUser().getFirst_name() + " "
+							+ LogInDataHolder.getLogInData().getUser().getLast_name());
 		}
 
 		layout_slider.addView(sliderMenuContent);
@@ -277,51 +292,44 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	/*@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	/*
+	 * @Override public void onActivityResult(int requestCode, int resultCode,
+	 * Intent data) { super.onActivityResult(requestCode, resultCode, data);
+	 * switch (requestCode) { case 100: if (resultCode == Activity.RESULT_OK) {
+	 * Uri selectedImage = getImageUri();
+	 * this.getContentResolver().notifyChange(selectedImage, null);
+	 * ContentResolver cr = this.getContentResolver(); Bitmap bitmap; try {
+	 * bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr,
+	 * selectedImage);
+	 * 
+	 * setVoucherBitmap(bitmap); setVoucherPicTaken(true);
+	 * 
+	 * } catch (Exception e) { Toast.makeText(this, "Failed to load",
+	 * Toast.LENGTH_SHORT).show(); Log.e("Camera", e.toString()); } } } }
+	 */
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+
 		switch (requestCode) {
 		case 100:
-			if (resultCode == Activity.RESULT_OK) {
-				Uri selectedImage = getImageUri();
-				this.getContentResolver().notifyChange(selectedImage, null);
-				ContentResolver cr = this.getContentResolver();
-				Bitmap bitmap;
-				try {
-					bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, selectedImage);
+			if (RESULT_OK == resultCode) {
+				// Get Extra from the intent
+				Bundle extras = data.getExtras();
+				// Get the returned image from extra
+				Bitmap bmp = (Bitmap) extras.get("data");
 
-					setVoucherBitmap(bitmap);
-					setVoucherPicTaken(true);
+				setVoucherBitmap(bmp);
+				setVoucherPicTaken(true);
 
-				} catch (Exception e) {
-					Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
-					Log.e("Camera", e.toString());
-				}
+				// Toast.makeText(this, bmp.toString(),
+				// Toast.LENGTH_LONG).show();
 			}
 		}
-	}*/
-	
-	@Override 
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) { 
-	    super.onActivityResult(requestCode, resultCode, data); 
-
-	    switch (requestCode) {
-		case 100:
-			if (RESULT_OK == resultCode) { 
-		        // Get Extra from the intent 
-		        Bundle extras = data.getExtras(); 
-		        // Get the returned image from extra 
-		        Bitmap bmp = (Bitmap) extras.get("data"); 
-
-		        setVoucherBitmap(bmp);
-				setVoucherPicTaken(true);
-				
-		        //Toast.makeText(this, bmp.toString(), Toast.LENGTH_LONG).show();
-		    } 
-		}
 	}
-	
-	class LogOutAsyncTask extends AsyncTask<String, String, String>{
+
+	class LogOutAsyncTask extends AsyncTask<String, String, String> {
 
 		@Override
 		protected void onPreExecute() {
@@ -332,19 +340,20 @@ public class MainActivity extends Activity {
 		@Override
 		protected String doInBackground(String... arg0) {
 			HttpClient httpclient = new DefaultHttpClient();
-	        HttpResponse response;
-	        String responseString = null;
-	        try {
-	            response = httpclient.execute(new HttpGet(Constant.baseURL + "api/v1/auth/logout?token=" + LogInDataHolder.getLogInData().getToken()));
-	            
-	        } catch (ClientProtocolException e) {
-	            //TODO Handle problems..
-	        } catch (IOException e) {
-	            //TODO Handle problems..
-	        }
+			HttpResponse response;
+			String responseString = null;
+			try {
+				response = httpclient.execute(new HttpGet(
+						Constant.baseURL + "api/v1/auth/logout?token=" + LogInDataHolder.getLogInData().getToken()));
+
+			} catch (ClientProtocolException e) {
+				// TODO Handle problems..
+			} catch (IOException e) {
+				// TODO Handle problems..
+			}
 			return null;
 		}
-		
+
 		protected void onProgressUpdate(String... progress) {
 			Log.d("ANDRO_ASYNC", progress[0]);
 		}
@@ -356,6 +365,6 @@ public class MainActivity extends Activity {
 			Intent intent = new Intent(MainActivity.this, LoginChooserActivity.class);
 			startActivity(intent);
 		}
-		
+
 	}
 }

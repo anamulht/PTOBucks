@@ -16,7 +16,6 @@ import org.apache.http.util.EntityUtils;
 import org.teacherbucks.MainActivity;
 import org.teacherbucks.R;
 import org.teacherbucks.adapter.PromotionSpinnerAdapter;
-import org.teacherbucks.fragments.EmailVoucherFragment.VoucherDeliveryAsyncTask;
 import org.teacherbucks.holder.LogInDataHolder;
 import org.teacherbucks.holder.PromotionHolder;
 import org.teacherbucks.holder.VoucherHolder;
@@ -99,7 +98,11 @@ public class SMSVoucherFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				new CreateVoucherAsyncTask().execute("text");
+				if (saleAmount.getText().toString().equals("") || saleAmount.getText().toString().equals(null)) {
+					Toast.makeText(getActivity(), "Enter Sale Amount", Toast.LENGTH_SHORT).show();
+				} else {
+					new CreateVoucherAsyncTask().execute("text");
+				}
 
 			}
 		});

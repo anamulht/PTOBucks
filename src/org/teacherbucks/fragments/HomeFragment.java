@@ -52,7 +52,8 @@ public class HomeFragment extends Fragment {
 			((TextView) view.findViewById(R.id.home_header)).setText(LogInDataHolder.getLogInData().getCompany().getTitle()
 					+ "\n" + LogInDataHolder.getLogInData().getCompany().getAddress());
 		} else {
-			((TextView) view.findViewById(R.id.home_header)).setText(LogInDataHolder.getLogInData().getUser().getName()
+			((TextView) view.findViewById(R.id.home_header)).setText(LogInDataHolder.getLogInData().getUser().getFirst_name() + " "
+					+ LogInDataHolder.getLogInData().getUser().getLast_name()
 					+ "\n" + LogInDataHolder.getLogInData().getUser().getPhone());
 		} 
 		// Toast.makeText(container.getContext(), "YES",

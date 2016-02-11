@@ -17,6 +17,7 @@ import org.teacherbucks.MainActivity;
 import org.teacherbucks.R;
 import org.teacherbucks.adapter.PromotionSpinnerAdapter;
 import org.teacherbucks.fragments.EmailVoucherFragment.VoucherDeliveryAsyncTask;
+import org.teacherbucks.fragments.SMSVoucherFragment.CreateVoucherAsyncTask;
 import org.teacherbucks.holder.LogInDataHolder;
 import org.teacherbucks.holder.PromotionHolder;
 import org.teacherbucks.holder.VoucherHolder;
@@ -99,7 +100,11 @@ public class UsernameVoucherFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				new CreateVoucherAsyncTask().execute("text");
+				if (saleAmount.getText().toString().equals("") || saleAmount.getText().toString().equals(null)) {
+					Toast.makeText(getActivity(), "Enter Sale Amount", Toast.LENGTH_SHORT).show();
+				} else {
+					new CreateVoucherAsyncTask().execute("text");
+				}
 
 			}
 		});
@@ -159,7 +164,7 @@ public class UsernameVoucherFragment extends Fragment {
 			public void onClick(View arg0) {
 				if (customerUsername.getText().toString().equals("")
 						|| customerUsername.getText().toString().equals(null)) {
-					Toast.makeText(getActivity(), "Enter Customer's Username.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Enter Customer's Username", Toast.LENGTH_SHORT).show();
 				} else {
 					new VoucherDeliveryAsyncTask().execute("text");
 				}

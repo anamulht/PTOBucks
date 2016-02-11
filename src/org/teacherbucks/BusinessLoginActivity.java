@@ -11,23 +11,28 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
 import org.teacherbucks.holder.LogInDataHolder;
 import org.teacherbucks.parser.LogInParser;
 import org.teacherbucks.utils.Constant;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public class BusinessLoginActivity extends Activity {
@@ -63,6 +68,16 @@ public class BusinessLoginActivity extends Activity {
 		dialog.setMessage("Please wait...");
 		dialog.setIndeterminate(true);
 		dialog.setCanceledOnTouchOutside(false);
+		
+		((TextView)findViewById(R.id.text_view_forgot_pass_biz))
+		.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://104.131.229.197/password/email"));
+				startActivity(browserIntent);
+			}
+		});
 			
 
 	}
@@ -81,6 +96,7 @@ public class BusinessLoginActivity extends Activity {
 		@Override
 		protected void onPreExecute() {
 			dialog.show();
+			loginFailedMsg.setVisibility(View.GONE);
 			super.onPreExecute();
 		}
 
@@ -119,14 +135,15 @@ public class BusinessLoginActivity extends Activity {
 			dialog.dismiss();
 			if (login) {
 				Intent intent = new Intent(BusinessLoginActivity.this, MainActivity.class);
-				//if (LogInDataHolder.getLogInData().getUser().getType().equalsIgnoreCase("employee")) {
-					//intent.putExtra("userG", 1);
-				//} else {
+				if (LogInDataHolder.getLogInData().getUser().getType().equalsIgnoreCase("employee")) {
+					Toast.makeText(BusinessLoginActivity.this, "Try in Employee Login", Toast.LENGTH_LONG).show();
+				} else {
 					intent.putExtra("userG", 0);
 					editor.putString("tb_login_biz", vendorNo.getText().toString());
 					editor.commit();
-				//}
-				startActivity(intent);
+					startActivity(intent);
+				}
+				
 			} else {
 				loginFailedMsg.setVisibility(View.VISIBLE);
 			}

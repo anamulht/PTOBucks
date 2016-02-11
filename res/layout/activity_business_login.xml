@@ -74,20 +74,22 @@
                 android:visibility="gone" />
 
             <TextView
+                android:id="@+id/text_view_forgot_pass_biz"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="Forgot Password ?"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                 />
 
             <Button
                 android:id="@+id/button_business_login_action"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 android:layout_marginTop="70dp"
-                android:background="@color/green"
+                android:background="@drawable/button_green"
                 android:onClick="goToBusinessLoginAction"
                 android:paddingBottom="15dp"
                 android:paddingTop="15dp"

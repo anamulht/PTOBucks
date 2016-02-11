@@ -28,7 +28,8 @@ public class AllEmployeeParser {
 			empModel = new Employee();
 			
 			empModel.setId(empJsonObj.getString("id"));
-			empModel.setName(empJsonObj.getString("name"));
+			empModel.setFirst_name(empJsonObj.getString("first_name"));
+			empModel.setLast_name(empJsonObj.getString("last_name"));
 			empModel.setEmail(empJsonObj.getString("email"));
 			empModel.setPhone(empJsonObj.getString("phone"));
 			empModel.setImage(empJsonObj.getString("image"));

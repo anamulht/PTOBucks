@@ -72,10 +72,8 @@ public class EditEmployeeFragment extends Fragment {
 		password = (EditText) view.findViewById(R.id.edit_emp_pass);
 		btnSubmit = (Button) view.findViewById(R.id.edit_emp_submit);
 		
-		String[] name = selecEmployee.getName().split("\\s+");
-		
-		firstName.setText(name[0]);
-		lastName.setText(name[1]);
+		firstName.setText(selecEmployee.getFirst_name());
+		lastName.setText(selecEmployee.getLast_name());
 		cellPhone.setText(selecEmployee.getPhone());
 		email.setText(selecEmployee.getEmail());
 		

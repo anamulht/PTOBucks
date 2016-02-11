@@ -57,7 +57,7 @@ public class EmployeeListAdapter extends ArrayAdapter<Employee> {
 
 		if (position < EmployeeHolder.getAllEmployees().size()) {
 			final Employee emp = EmployeeHolder.getAllEmployees().elementAt(position);
-			holder.name.setText(emp.getName().toString());
+			holder.name.setText(emp.getFirst_name().toString() + " " + emp.getLast_name().toString());
 			holder.phone.setText(emp.getPhone().toString());
 			holder.email.setText(emp.getEmail().toString());
 			//System.out.println("emp status" + emp.getStatus());
