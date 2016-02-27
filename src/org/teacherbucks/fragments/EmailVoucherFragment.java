@@ -85,7 +85,7 @@ public class EmailVoucherFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_email_voucher, container, false);
 
-		
+		buttonSubmit = (Button) view.findViewById(R.id.email_delv_submit);
 		buttonScanRcpt = (Button) view.findViewById(R.id.email_delv_scn_rcpt);
 
 		buttonDelv = (Button) view.findViewById(R.id.email_delv_delivery);
