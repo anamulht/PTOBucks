@@ -43,6 +43,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -65,6 +66,8 @@ public class QRVoucherFragment extends Fragment {
 	
 	EditText saleAmount;
 	
+	ImageView rcptImage;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -76,6 +79,8 @@ public class QRVoucherFragment extends Fragment {
 		buttonScanRcpt = (Button) view.findViewById(R.id.qr_delv_scn_rcpt);
 		
 		saleAmount = (EditText) view.findViewById(R.id.qr_sale_amount);
+		
+		rcptImage = (ImageView) view.findViewById(R.id.qr_rcpt_image);
 		
 		dialog = new ProgressDialog(getActivity());
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -212,7 +217,14 @@ public class QRVoucherFragment extends Fragment {
         getActivity().startActivityForResult(intent, 100);*/
 		
 		Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
-        getActivity().startActivityForResult(intent, 100);
+        getActivity().startActivityForResult(intent, Constant.qrFragmentCode);
     }
+	
+	public void setImage() {
+//		buttonScanRcpt.setTextSize(TypedValue.COMPLEX_UNIT_PX, 18); 
+		buttonScanRcpt.setText("Receipt Saved");//. Press to Scan Again");
+		Toast.makeText(getActivity(), "Press 'Receipt Saved' to Scan Again", Toast.LENGTH_SHORT).show();
+		rcptImage.setImageBitmap(((MainActivity) getActivity()).getVoucherBitmap());
+	}
 
 }

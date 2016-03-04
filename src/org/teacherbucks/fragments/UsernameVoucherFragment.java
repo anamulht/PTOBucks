@@ -48,6 +48,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -71,6 +72,8 @@ public class UsernameVoucherFragment extends Fragment {
 
 	EditText saleAmount;
 	EditText customerUsername;
+	
+	ImageView rcptImage;
 
 	private AlertDialog delvSucAlert;
 	private AlertDialog delvFailAlert;
@@ -87,6 +90,8 @@ public class UsernameVoucherFragment extends Fragment {
 
 		saleAmount = (EditText) view.findViewById(R.id.username_sale_amount);
 		customerUsername = (EditText) view.findViewById(R.id.username_username);
+		
+		rcptImage = (ImageView) view.findViewById(R.id.username_rcpt_image);
 
 		dialog = new ProgressDialog(getActivity());
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -326,7 +331,14 @@ public class UsernameVoucherFragment extends Fragment {
         getActivity().startActivityForResult(intent, 100);*/
 		
 		Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
-        getActivity().startActivityForResult(intent, 100);
+        getActivity().startActivityForResult(intent, Constant.usernamelFragmentCode);
     }
+	
+	public void setImage() {
+//		buttonScanRcpt.setTextSize(TypedValue.COMPLEX_UNIT_PX, 18); 
+		buttonScanRcpt.setText("Receipt Saved");//. Press to Scan Again");
+		Toast.makeText(getActivity(), "Press 'Receipt Saved' to Scan Again", Toast.LENGTH_SHORT).show();
+		rcptImage.setImageBitmap(((MainActivity) getActivity()).getVoucherBitmap());
+	}
 
 }

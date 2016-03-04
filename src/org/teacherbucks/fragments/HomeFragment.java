@@ -49,8 +49,8 @@ public class HomeFragment extends Fragment {
 		UserName = (TextView) view.findViewById(R.id.text_view_username_delivery);
 		QRCode = (TextView) view.findViewById(R.id.text_view_qr_delivery);
 		if (((MainActivity) getActivity()).getUserGroup() == 0) {
-			((TextView) view.findViewById(R.id.home_header)).setText(LogInDataHolder.getLogInData().getCompany().getTitle()
-					+ "\n" + LogInDataHolder.getLogInData().getCompany().getAddress());
+			((TextView) view.findViewById(R.id.home_header)).setText(LogInDataHolder.getLogInData().getCompany().getTitle());
+					//+ "\n" + LogInDataHolder.getLogInData().getCompany().getAddress());
 		} else {
 			((TextView) view.findViewById(R.id.home_header)).setText(LogInDataHolder.getLogInData().getUser().getFirst_name() + " "
 					+ LogInDataHolder.getLogInData().getUser().getLast_name()

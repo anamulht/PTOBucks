@@ -74,9 +74,14 @@
             android:id="@+id/sms_rcpt_no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/edittextstyle"
             android:textSize="16sp" />
+        
+        <ImageView android:id="@+id/sms_rcpt_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +126,7 @@
             android:background="@drawable/button_green"
             android:paddingBottom="15dp"
             android:paddingTop="15dp"
-            android:text="Delivery"
+            android:text="Deliver Voucher"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"

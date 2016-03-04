@@ -42,7 +42,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -76,6 +78,8 @@ public class EmailVoucherFragment extends Fragment {
 
 	EditText saleAmount;
 	EditText customerEmail;
+	
+	ImageView rcptImage;
 
 	private AlertDialog delvSucAlert;
 	private AlertDialog delvFailAlert;
@@ -93,6 +97,8 @@ public class EmailVoucherFragment extends Fragment {
 		saleAmount = (EditText) view.findViewById(R.id.email_sale_amount);
 		customerEmail = (EditText) view.findViewById(R.id.email_customers_email);
 
+		rcptImage = (ImageView) view.findViewById(R.id.email_rcpt_image);
+		
 		dialog = new ProgressDialog(getActivity());
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		dialog.setMessage("Please wait...");
@@ -233,6 +239,7 @@ public class EmailVoucherFragment extends Fragment {
 					String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 					System.out.println("image::" + encodedImage);
 					nameValuePairs.add(new BasicNameValuePair("image", encodedImage));
+					
 				}else{
 					System.out.println("image not taken");
 				}
@@ -332,7 +339,14 @@ public class EmailVoucherFragment extends Fragment {
                 Uri.fromFile(photo));
         ((MainActivity) getActivity()).setImageUri(Uri.fromFile(photo));*/
 		Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
-        getActivity().startActivityForResult(intent, 100);
+        getActivity().startActivityForResult(intent, Constant.emailFragmentCode);
     }
+	
+	public void setImage() {
+//		buttonScanRcpt.setTextSize(TypedValue.COMPLEX_UNIT_PX, 18); 
+		buttonScanRcpt.setText("Receipt Saved");//. Press to Scan Again");
+		Toast.makeText(getActivity(), "Press 'Receipt Saved' to Scan Again", Toast.LENGTH_SHORT).show();
+		rcptImage.setImageBitmap(((MainActivity) getActivity()).getVoucherBitmap());
+	}
 
 }

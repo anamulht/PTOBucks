@@ -46,6 +46,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -69,6 +70,8 @@ public class SMSVoucherFragment extends Fragment {
 
 	EditText saleAmount;
 	EditText customerPhone;
+	
+	ImageView rcptImage;
 
 	private AlertDialog delvSucAlert;
 	private AlertDialog delvFailAlert;
@@ -85,6 +88,8 @@ public class SMSVoucherFragment extends Fragment {
 
 		saleAmount = (EditText) view.findViewById(R.id.sms_sale_amount);
 		customerPhone = (EditText) view.findViewById(R.id.sms_customer_phn_no);
+		
+		rcptImage = (ImageView) view.findViewById(R.id.sms_rcpt_image);
 
 		dialog = new ProgressDialog(getActivity());
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -223,6 +228,7 @@ public class SMSVoucherFragment extends Fragment {
 					String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 					System.out.println("image::" + encodedImage);
 					nameValuePairs.add(new BasicNameValuePair("image", encodedImage));
+					
 				}else{
 					System.out.println("image not taken");
 				}
@@ -323,7 +329,14 @@ public class SMSVoucherFragment extends Fragment {
         getActivity().startActivityForResult(intent, 100);*/
 		
 		Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
-        getActivity().startActivityForResult(intent, 100);
+        getActivity().startActivityForResult(intent, Constant.smsFragmentCode);
     }
+	
+	public void setImage() {
+//		buttonScanRcpt.setTextSize(TypedValue.COMPLEX_UNIT_PX, 18); 
+		buttonScanRcpt.setText("Receipt Saved");//. Press to Scan Again");
+		Toast.makeText(getActivity(), "Press 'Receipt Saved' to Scan Again", Toast.LENGTH_SHORT).show();
+		rcptImage.setImageBitmap(((MainActivity) getActivity()).getVoucherBitmap());
+	}
 
 }

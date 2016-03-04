@@ -57,10 +57,13 @@ public class BusinessLoginActivity extends Activity {
 		editor = sharedPreferences.edit();
 		
 		String vendorEmail = sharedPreferences.getString("tb_login_biz", "");
+		String vendorPassword = sharedPreferences.getString("tb_login_biz_pass", "");
 
 		vendorNo = (EditText) findViewById(R.id.biz_login_vendor_num);
 		vendorNo.setText(vendorEmail);
 		password = (EditText) findViewById(R.id.biz_login_password);
+		password.setText(vendorPassword);
+		
 		loginFailedMsg = (TextView) findViewById(R.id.biz_login_failed_msg);
 
 		dialog = new ProgressDialog(this);
@@ -140,6 +143,7 @@ public class BusinessLoginActivity extends Activity {
 				} else {
 					intent.putExtra("userG", 0);
 					editor.putString("tb_login_biz", vendorNo.getText().toString());
+					editor.putString("tb_login_biz_pass", password.getText().toString());
 					editor.commit();
 					startActivity(intent);
 				}

@@ -57,10 +57,13 @@ public class EmployeeLoginActivity extends Activity {
 		editor = sharedPreferences.edit();
 		
 		String empUser = sharedPreferences.getString("tb_login_emp", "");
+		String empPassword = sharedPreferences.getString("tb_login_emp_pass", "");
 
 		empUsername = (EditText) findViewById(R.id.emp_login_username);
 		empUsername.setText(empUser);
 		password = (EditText) findViewById(R.id.emp_login_password);
+		password.setText(empPassword);
+		
 		loginFailedMsg = (TextView) findViewById(R.id.emp_login_failed_msg);
 		
 		dialog = new ProgressDialog(this);
@@ -138,6 +141,7 @@ public class EmployeeLoginActivity extends Activity {
 				if (LogInDataHolder.getLogInData().getUser().getType().equalsIgnoreCase("employee")) {
 					intent.putExtra("userG", 1);
 					editor.putString("tb_login_emp", empUsername.getText().toString());
+					editor.putString("tb_login_emp_pass", password.getText().toString());
 					editor.commit();
 					startActivity(intent);
 				} else {

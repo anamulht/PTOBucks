@@ -13,16 +13,21 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.teacherbucks.fragments.DataPreferencesFragment;
+import org.teacherbucks.fragments.EmailVoucherFragment;
 import org.teacherbucks.fragments.EmpChangePassword;
 import org.teacherbucks.fragments.HomeFragment;
 import org.teacherbucks.fragments.ManageEmployeeFragment;
+import org.teacherbucks.fragments.QRVoucherFragment;
+import org.teacherbucks.fragments.SMSVoucherFragment;
 import org.teacherbucks.fragments.SalesDataFragment;
+import org.teacherbucks.fragments.UsernameVoucherFragment;
 import org.teacherbucks.holder.LogInDataHolder;
 import org.teacherbucks.utils.Constant;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -44,6 +49,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 public class MainActivity extends Activity {
@@ -311,21 +317,55 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
-		switch (requestCode) {
-		case 100:
+		System.out.println("Req Code: " + requestCode);
+		//switch (requestCode) {
+		//case 100:
 			if (RESULT_OK == resultCode) {
 				// Get Extra from the intent
 				Bundle extras = data.getExtras();
 				// Get the returned image from extra
 				Bitmap bmp = (Bitmap) extras.get("data");
+				
+				DisplayMetrics displaymetrics = new DisplayMetrics();
+				this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
-				setVoucherBitmap(bmp);
+				setVoucherBitmap(Bitmap.createScaledBitmap(bmp, displaymetrics.widthPixels-80, displaymetrics.widthPixels, true));
 				setVoucherPicTaken(true);
 
+				setVoucherImage(requestCode);
 				// Toast.makeText(this, bmp.toString(),
 				// Toast.LENGTH_LONG).show();
 			}
+		//}
+	}
+	
+	private void setVoucherImage(int fragmentCode) {
+
+		if (fragmentCode == Constant.emailFragmentCode) {
+			EmailVoucherFragment email = (EmailVoucherFragment) getFragmentManager().findFragmentById(R.id.frame_container);
+			System.out.println("Email Fragment");
+			email.setImage();
+		}
+
+		if (fragmentCode == Constant.smsFragmentCode) {
+
+			SMSVoucherFragment sms = (SMSVoucherFragment) getFragmentManager().findFragmentById(R.id.frame_container);
+			System.out.println("SMS Fragment");
+			sms.setImage();
+		}
+
+		if (fragmentCode == Constant.usernamelFragmentCode) {
+
+			UsernameVoucherFragment username = (UsernameVoucherFragment) getFragmentManager().findFragmentById(R.id.frame_container);
+			System.out.println("Username Fragment");
+			username.setImage();
+		}
+
+		if (fragmentCode == Constant.qrFragmentCode) {
+
+			QRVoucherFragment qr = (QRVoucherFragment) getFragmentManager().findFragmentById(R.id.frame_container);
+			System.out.println("Qr Fragment");
+			qr.setImage();
 		}
 	}
 
