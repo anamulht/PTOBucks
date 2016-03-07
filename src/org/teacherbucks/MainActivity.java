@@ -12,6 +12,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
+import org.teacherbucks.fragments.BizChangePassword;
 import org.teacherbucks.fragments.DataPreferencesFragment;
 import org.teacherbucks.fragments.EmailVoucherFragment;
 import org.teacherbucks.fragments.EmpChangePassword;
@@ -216,6 +217,20 @@ public class MainActivity extends Activity {
 							new LogOutAsyncTask().execute("params");
 						}
 					});
+			
+			((TextView) sliderMenuContent.findViewById(R.id.text_view_menu_change_pass_biz))
+			.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					mDrawerLayout.closeDrawer(layout_slider);
+					backKeyFlag = true;
+					final FragmentManager fragmentManager = getFragmentManager();
+					fragmentManager.beginTransaction()
+							.replace(R.id.frame_container, new BizChangePassword()).commit();
+					setActionBarTitle("Change Password");
+				}
+			});
 
 			((TextView) sliderMenuContent.findViewById(R.id.textview_menu_banner_title_biz))
 					.setText(LogInDataHolder.getLogInData().getCompany().getTitle());

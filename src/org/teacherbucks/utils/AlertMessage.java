@@ -24,7 +24,7 @@ public class AlertMessage {
 		aBuilder.setIcon(R.drawable.ic_launcher);
 		aBuilder.setMessage(s);
 
-		aBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		aBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(final DialogInterface dialog, final int which) {

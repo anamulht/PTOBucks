@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/edittextstyle" />
+            android:background="@drawable/edittext_style" />
 
         <TextView
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/edittextstyle"
+            android:background="@drawable/edittext_style"
             android:inputType="numberDecimal"
             android:gravity="right" />
 
@@ -74,18 +74,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/edittextstyle"
+            android:background="@drawable/edittext_style"
             android:textSize="16sp" />
         
         <ImageView android:id="@+id/username_rcpt_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal" >
 
             <Button
@@ -122,6 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginTop="0dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/button_green"
             android:paddingBottom="15dp"
             android:paddingTop="15dp"

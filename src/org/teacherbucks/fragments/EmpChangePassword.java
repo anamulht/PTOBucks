@@ -1,6 +1,5 @@
 package org.teacherbucks.fragments;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,26 +11,21 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.teacherbucks.MainActivity;
 import org.teacherbucks.R;
-import org.teacherbucks.fragments.EmailVoucherFragment.CreateVoucherAsyncTask;
 import org.teacherbucks.holder.LogInDataHolder;
 import org.teacherbucks.parser.EmployeeBlockUnblockParser;
-import org.teacherbucks.parser.VoucherCreateParser;
 import org.teacherbucks.utils.Constant;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -91,7 +85,7 @@ public class EmpChangePassword extends Fragment{
 			@Override
 			public void onClick(View arg0) {
 				if(!newPass.getText().toString().equals(passConfm.getText().toString())){
-					Toast.makeText(getActivity(), "Passwords doesn't match", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Password doesn't match", Toast.LENGTH_SHORT).show();
 				}else{
 					new PasswordChangeAsyncTask().execute("");
 				}

@@ -27,15 +27,15 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.activity_splash);
 		context = this;
 
-		/*if (!SharedPreferencesHelper.isOnline(this)) {
+		if (!SharedPreferencesHelper.isOnline(this)) {
 			AlertMessage.showMessage(this, "Attention!",
-					"To Use this Application Please Connect to internet");
+					"Please Connect to Internet to Use this Application");
 
-		} else {*/
+		} else {
 			initUi();
 
 
-		//}
+		}
 
 	}
 

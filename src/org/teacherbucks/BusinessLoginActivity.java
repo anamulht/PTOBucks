@@ -11,10 +11,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-
 import org.teacherbucks.holder.LogInDataHolder;
 import org.teacherbucks.parser.LogInParser;
+import org.teacherbucks.utils.AlertMessage;
 import org.teacherbucks.utils.Constant;
+import org.teacherbucks.utils.SharedPreferencesHelper;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -77,8 +78,12 @@ public class BusinessLoginActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://104.131.229.197/password/email"));
-				startActivity(browserIntent);
+//				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://104.131.229.197/password/email"));
+//				startActivity(browserIntent);
+				
+				Intent intent = new Intent(BusinessLoginActivity.this, ResetPasswordActivity.class);
+				startActivity(intent);
+				
 			}
 		});
 			
@@ -91,7 +96,22 @@ public class BusinessLoginActivity extends Activity {
 		 * MainActivity.class); intent.putExtra("userG", 0);
 		 * startActivity(intent);
 		 */
-		new loadAsyncTask().execute("text");
+		if (vendorNo.getText().toString().equals("") || vendorNo.getText().toString().equals(null)
+				|| password.getText().toString().equals("") || password.getText().toString().equals(null)) {
+
+			Toast.makeText(this, "You need to fill both Username & Password", Toast.LENGTH_LONG).show();
+			
+		} else {
+
+			if (!SharedPreferencesHelper.isOnline(this)) {
+				AlertMessage.showMessage(this, "Network Error !",
+						"Please connect to Internet.");
+
+			} else {
+				new loadAsyncTask().execute("text");
+			}
+			
+		}
 	}
 
 	class loadAsyncTask extends AsyncTask<String, String, String> {

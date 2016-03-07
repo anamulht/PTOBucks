@@ -23,6 +23,7 @@ import org.teacherbucks.model.Promotion;
 import org.teacherbucks.parser.VoucherCreateParser;
 import org.teacherbucks.parser.VoucherDeliveryParser;
 import org.teacherbucks.utils.Constant;
+import org.teacherbucks.utils.Utils;
 
 import com.android.internal.http.multipart.*;
 
@@ -173,8 +174,9 @@ public class EmailVoucherFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				if (customerEmail.getText().toString().equals("") || customerEmail.getText().toString().equals(null)) {
-					Toast.makeText(getActivity(), "Enter Customer's Email Address", Toast.LENGTH_SHORT).show();
+//				customerEmail.getText().toString().equals("") || customerEmail.getText().toString().equals(null)
+				if (!Utils.isValidEmail(customerEmail.getText().toString())) {
+					Toast.makeText(getActivity(), "Enter Customer's Valid Email Address", Toast.LENGTH_SHORT).show();
 				} else {
 					new VoucherDeliveryAsyncTask().execute("text");
 				}

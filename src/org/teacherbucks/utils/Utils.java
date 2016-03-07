@@ -3,7 +3,10 @@ package org.teacherbucks.utils;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.text.TextUtils;
+
 public class Utils {
+	
 	public static void CopyStream(InputStream is, OutputStream os) {
 		final int buffer_size = 1024;
 		try {
@@ -16,5 +19,9 @@ public class Utils {
 			}
 		} catch (Exception ex) {
 		}
+	}
+
+	public final static boolean isValidEmail(CharSequence target) {
+		return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
 	}
 }

@@ -101,6 +101,29 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/faq" />
+
+                <TextView
+                    android:id="@+id/text_view_menu_change_pass_biz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="Change Password"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

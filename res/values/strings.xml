@@ -9,5 +9,6 @@
     <string name="title_activity_business_login">BusinessLoginActivity</string>
     <string name="title_activity_employee_login">EmployeeLoginActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_reset_password">ResetPasswordActivity</string>
 
 </resources>
