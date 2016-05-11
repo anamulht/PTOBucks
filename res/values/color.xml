@@ -17,7 +17,8 @@
     <color name="white">#ffffff</color>
     <color name="grey">#EEEEEEEE</color>
      <color name="textgrey">#FF909090</color>
-    <color name="green">#4b6e1c</color>
+    <color name="green">#4b6e1c</color><!-- 7b9b7d -->
+     <color name="green_light">#0cf616</color>
     <color name="orange">#E47833</color>
     <color name="lite_blue">#4E78A0</color>
     <color name="black">#000000</color>
