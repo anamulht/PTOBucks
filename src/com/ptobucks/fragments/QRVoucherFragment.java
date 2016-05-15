@@ -24,6 +24,7 @@ import com.ptobucks.model.Promotion;
 import com.ptobucks.parser.VoucherCreateParser;
 import com.ptobucks.utils.Constant;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -38,8 +39,10 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -78,7 +81,7 @@ public class QRVoucherFragment extends Fragment {
 
 		View view = inflater
 				.inflate(R.layout.fragment_qr_voucher, container, false);
-
+		setupUI(view.findViewById(R.id.qr_layout));
 		buttonSubmit = (Button) view.findViewById(R.id.qr_delv_submit);
 		buttonScanRcpt = (Button) view.findViewById(R.id.qr_delv_scn_rcpt);
 		
@@ -254,6 +257,39 @@ public class QRVoucherFragment extends Fragment {
 		buttonScanRcpt.setText("Receipt Saved");//. Press to Scan Again");
 		Toast.makeText(getActivity(), "Press 'Receipt Saved' to Scan Again", Toast.LENGTH_SHORT).show();
 		rcptImage.setImageBitmap(((MainActivity) getActivity()).getVoucherBitmap());
+	}
+	
+	public void setupUI(View view) {
+
+		// Set up touch listener for non-text box views to hide keyboard.
+		if (!(view instanceof EditText)) {
+
+			view.setOnTouchListener(new View.OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					hideSoftKeyboard(getActivity());
+					return false;
+				}
+
+			});
+		}
+
+		// If a layout container, iterate over children and seed recursion.
+		if (view instanceof ViewGroup) {
+
+			for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+
+				View innerView = ((ViewGroup) view).getChildAt(i);
+
+				setupUI(innerView);
+			}
+		}
+	}
+
+	private void hideSoftKeyboard(Activity activity) {
+		InputMethodManager inputMethodManager = (InputMethodManager) activity
+				.getSystemService(Activity.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
 	}
 
 }

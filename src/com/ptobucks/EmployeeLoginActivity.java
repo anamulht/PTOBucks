@@ -31,9 +31,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +60,7 @@ public class EmployeeLoginActivity extends Activity {
 		setContentView(R.layout.activity_employee_login);
 		getActionBar().hide();
 
+		setupUI(findViewById(R.id.emp_login_layout));//emp_login_layout
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = sharedPreferences.edit();
 
@@ -179,4 +183,35 @@ public class EmployeeLoginActivity extends Activity {
 			}
 		}
 	}
+	
+	public void setupUI(View view) {
+
+		//Set up touch listener for non-text box views to hide keyboard.
+		if(!(view instanceof EditText)) {
+
+		view.setOnTouchListener(new View.OnTouchListener() {
+
+		public boolean onTouch(View v, MotionEvent event) {
+		hideSoftKeyboard(EmployeeLoginActivity.this);
+		return false;
+		}
+
+		});
+		}
+
+		//If a layout container, iterate over children and seed recursion.
+		if (view instanceof ViewGroup) {
+
+		for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+
+		View innerView = ((ViewGroup) view).getChildAt(i);
+
+		setupUI(innerView);
+		}
+		}
+		}
+		private void hideSoftKeyboard(Activity activity) {
+		InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+		}
 }

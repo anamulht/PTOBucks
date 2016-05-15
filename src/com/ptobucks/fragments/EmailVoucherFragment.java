@@ -49,10 +49,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -94,6 +96,7 @@ public class EmailVoucherFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_email_voucher, container, false);
 
+		setupUI(view.findViewById(R.id.email_layout));
 		buttonSubmit = (Button) view.findViewById(R.id.email_delv_submit);
 		buttonScanRcpt = (Button) view.findViewById(R.id.email_delv_scn_rcpt);
 
@@ -390,4 +393,37 @@ public class EmailVoucherFragment extends Fragment {
 		rcptImage.setImageBitmap(((MainActivity) getActivity()).getVoucherBitmap());
 	}
 
+	public void setupUI(View view) {
+
+		// Set up touch listener for non-text box views to hide keyboard.
+		if (!(view instanceof EditText)) {
+
+			view.setOnTouchListener(new View.OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					hideSoftKeyboard(getActivity());
+					return false;
+				}
+
+			});
+		}
+
+		// If a layout container, iterate over children and seed recursion.
+		if (view instanceof ViewGroup) {
+
+			for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+
+				View innerView = ((ViewGroup) view).getChildAt(i);
+
+				setupUI(innerView);
+			}
+		}
+	}
+
+	private void hideSoftKeyboard(Activity activity) {
+		InputMethodManager inputMethodManager = (InputMethodManager) activity
+				.getSystemService(Activity.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+	}
+	
 }

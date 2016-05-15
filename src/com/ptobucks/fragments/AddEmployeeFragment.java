@@ -11,6 +11,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
+import com.ptobucks.BusinessLoginActivity;
 import com.ptobucks.MainActivity;
 import com.ptobucks.R;
 import com.ptobucks.holder.LogInDataHolder;
@@ -18,6 +20,7 @@ import com.ptobucks.parser.AddEmployeeParser;
 import com.ptobucks.parser.VoucherCreateParser;
 import com.ptobucks.utils.Constant;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -28,8 +31,10 @@ import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +61,7 @@ public class AddEmployeeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_add_employee, container, false);
+		setupUI(view.findViewById(R.id.add_emp_layout));
 		
 		firstName = (EditText) view.findViewById(R.id.add_emp_first_name);
 		lastName = (EditText) view.findViewById(R.id.add_emp_last_name);
@@ -182,4 +188,37 @@ public class AddEmployeeFragment extends Fragment {
 		
 	}
 
+	public void setupUI(View view) {
+
+		// Set up touch listener for non-text box views to hide keyboard.
+		if (!(view instanceof EditText)) {
+
+			view.setOnTouchListener(new View.OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					hideSoftKeyboard(getActivity());
+					return false;
+				}
+
+			});
+		}
+
+		// If a layout container, iterate over children and seed recursion.
+		if (view instanceof ViewGroup) {
+
+			for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+
+				View innerView = ((ViewGroup) view).getChildAt(i);
+
+				setupUI(innerView);
+			}
+		}
+	}
+
+	private void hideSoftKeyboard(Activity activity) {
+		InputMethodManager inputMethodManager = (InputMethodManager) activity
+				.getSystemService(Activity.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+	}
+	
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/username_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -37,8 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:background="@drawable/edittext_style"
-            android:inputType="numberDecimal"
-            android:gravity="right" />
+            android:gravity="right"
+            android:inputType="numberDecimal" />
 
         <TextView
             android:layout_width="match_parent"
@@ -77,8 +78,9 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/edittext_style"
             android:textSize="16sp" />
-        
-        <ImageView android:id="@+id/username_rcpt_image"
+
+        <ImageView
+            android:id="@+id/username_rcpt_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -87,8 +89,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal" >
 
             <Button
@@ -124,8 +126,8 @@
             android:id="@+id/username_delv_delivery"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_marginTop="0dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
             android:background="@drawable/button_green"
             android:paddingBottom="15dp"
             android:paddingTop="15dp"

@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_chooser"
     android:gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/biz_login_layout" >
 
     <LinearLayout
         android:layout_width="match_parent"
